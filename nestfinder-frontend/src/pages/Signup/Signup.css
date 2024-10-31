@@ -1,0 +1,140 @@
+*{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+.signup-container{
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    background: transparent;
+    max-width: 100vh;
+    max-height: 100vh;
+    width: 400px;
+    position: relative;
+    top: 10vh;
+    left: 10vh;
+}
+
+.signup-container h2{
+    text-align: center;
+}
+
+.signup-container p{
+    text-align: center;
+    margin-bottom: 12px;
+}
+
+.signup-form{
+    justify-content: center;
+    align-items: center;
+}
+
+.error-message {
+    color: #d9534f;
+    background-color: #f8d7da; 
+    border: 1px solid #f5c6cb;
+    border-radius: 5px;
+    padding: 10px;
+    font-size: 14px;
+    margin-top: 10px;
+    text-align: center;
+    width: 100%;
+}
+
+.success-message {
+    color: #28a745;
+    background-color: #d4edda; 
+    border: 1px solid #c3e6cb; 
+    border-radius: 5px;
+    padding: 10px;
+    font-size: 14px;
+    margin-top: 10px;
+    text-align: center;
+    width: 100%;
+}
+
+
+.google-login{
+    background: transparent;
+    color: black;
+    margin-bottom: 20;
+    opacity: 100%;
+}
+
+.google-login:hover{
+    opacity: 70%;
+    color: black;
+}
+
+.google-login .google-icon{
+    margin: 5px;
+}
+
+.google-login .google-icon .google-icon-text{
+    font-size: 20px;
+    font-weight: 5;
+    text-align: center;
+}
+
+.input-group{
+    margin-bottom: 15px;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.input-group label{
+    font-size: 14px;
+}
+
+.input-group input{
+    width: 100%;
+    outline: none;
+    border: 1px solid #D3D3D3;
+    border-radius: 25px;
+    padding: 10px;
+}
+
+.terms{
+    display: flex;
+    align-items: center;
+    font-size: 13px;
+    width: 100%;
+}
+
+.terms-text{
+    margin: 5px;
+}
+
+button{
+    padding: 10px;
+    border: 1px solid black;
+    width: 100%;
+    color: white;
+    border-radius: 20px;
+}
+
+button:hover{
+    opacity: 70%;
+}
+
+.image-container{
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    /* height: 100vh; */
+    position: fixed;
+    top: 50px;
+    right: 20px;
+    /* bottom: 50vh; */
+    transform: translate(-20px, -60px);
+    
+}
+
+.image-container img {
+    max-height: 400px;
+    height: auto;
+    border-radius: 50px;
+}
