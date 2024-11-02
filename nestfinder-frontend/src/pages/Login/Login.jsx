@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import './Login.css';
+import useFetchWithAuth from '../../hooks/useFetchWithAuth';
 import auth from '../../assets/auth.jpg'
 const env = import.meta.env
 
@@ -32,8 +33,9 @@ const Login = () => {
             if (response.ok) {
                 const data = await response.json();
                 // Handle success (e.g., save token, redirect)
-                console.log(response.body);
-                console.log("Login successful:", data);
+                //access token should not be stored in localStoreage
+                //rather your custom hook should generate access tokens on each request making it more secure and robust.
+                console.log("Login successful:", data); //This is for development purposes
             } else {
                 const errorData = await response.json();
                 setErrorMessage(errorData.message || 'Login failed');

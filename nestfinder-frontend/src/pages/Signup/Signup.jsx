@@ -67,6 +67,7 @@ const Signup = () => {
                     <p>Let's guide you on your journey to be nested</p>
                     {errorMessage && <p className="error-message">{errorMessage}</p>}
                     {successMessage && <p className="success-message">{successMessage}</p>}
+                    {/* redirect user if successMessage evals to true */}
                     <button className="google-login">
                         <span className="google-icon"><FcGoogle /></span>
                         <span className="google-icon-text">Login with Google</span>
