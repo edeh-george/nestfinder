@@ -1,0 +1,31 @@
+.house-view-container {
+    padding: 20px;
+    text-align: center;
+}
+
+.houses {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+}
+
+.house-box {
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 15px;
+    padding: 15px;
+    text-decoration: none;
+    color: #333;
+    width: 200px;
+    transition: transform 0.2s;
+}
+
+.house-box:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+h1 {
+    margin-bottom: 20px;
+}

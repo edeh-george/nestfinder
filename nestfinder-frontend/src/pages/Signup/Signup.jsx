@@ -60,6 +60,7 @@ const Signup = () => {
             setLoading(false);
         }
     };
+    useClearError(errorMessage, setErrorMessage);
 
     return (
         <>

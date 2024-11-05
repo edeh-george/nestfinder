@@ -17,7 +17,7 @@ const refreshAccessToken = async () => {
   }
 };
 
-const useFetchWithAuth = (url) => {
+const useApi = (url) => {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -65,4 +65,4 @@ const useFetchWithAuth = (url) => {
   return { data, loading, error };
 };
 
-export default useFetchWithAuth;
+export default useApi;
