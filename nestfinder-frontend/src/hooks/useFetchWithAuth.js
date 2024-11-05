@@ -1,14 +1,18 @@
-import { useState, useEffect } from 'react';
-import axios from 'axios';
+import { useState, useEffect } from "react";
+import axios from "axios";
 
 const refreshAccessToken = async () => {
   try {
-    const response = await axios.post('http://localhost:8000/api/refresh-token/', {}, {
-      withCredentials: true,
-    });
+    const response = await axios.post(
+      "http://localhost:8000/api/refresh-token/",
+      {},
+      {
+        withCredentials: true,
+      }
+    );
     return response.data.accessToken; // Return the new access token
   } catch (error) {
-    console.error('Failed to refresh access token:', error);
+    console.error("Failed to refresh access token:", error);
     throw error; // Propagate the error
   }
 };
@@ -21,9 +25,9 @@ const useFetchWithAuth = (url) => {
   const fetchData = async () => {
     setLoading(true);
     setError(null);
-    
+
     try {
-      const accessToken = localStorage.getItem('accessToken');
+      const accessToken = localStorage.getItem("accessToken");
       const response = await axios.get(url, {
         headers: {
           Authorization: `Bearer ${accessToken}`,
@@ -32,10 +36,9 @@ const useFetchWithAuth = (url) => {
       setData(response.data);
     } catch (err) {
       if (err.response && err.response.status === 401) {
-        // Token expired, try refreshing the token
         try {
           const newAccessToken = await refreshAccessToken();
-          localStorage.setItem('accessToken', newAccessToken); // Update access token in local storage
+          localStorage.setItem("accessToken", newAccessToken);
           const retryResponse = await axios.get(url, {
             headers: {
               Authorization: `Bearer ${newAccessToken}`,
@@ -43,12 +46,12 @@ const useFetchWithAuth = (url) => {
           });
           setData(retryResponse.data);
         } catch (refreshError) {
-          console.error('Could not refresh access token:', refreshError);
-          setError('Could not refresh access token');
+          console.error("Could not refresh access token:", refreshError);
+          setError("Could not refresh access token");
           // Optionally, handle logout or redirect to login here
         }
       } else {
-        setError('Error fetching data');
+        setError("Error fetching data");
       }
     } finally {
       setLoading(false);

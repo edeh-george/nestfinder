@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import './Login.css';
-import useFetchWithAuth from '../../hooks/useFetchWithAuth';
 import auth from '../../assets/auth.jpg'
+import {Link} from 'react-router-dom'
 const env = import.meta.env
 
 const baseUrl = env.VITE_API_URL;
@@ -36,6 +36,7 @@ const Login = () => {
                 //access token should not be stored in localStoreage
                 //rather your custom hook should generate access tokens on each request making it more secure and robust.
                 console.log("Login successful:", data); //This is for development purposes
+                //navigate user to the home or dashboard page
             } else {
                 const errorData = await response.json();
                 setErrorMessage(errorData.message || 'Login failed');
@@ -85,15 +86,15 @@ const Login = () => {
                             />
                             remember me
                         </label>
-                        <a href="/forgot-password" className="forgot-password">
+                        <Link to="/forgot-password" className='forgot-password'>
                             Forgot Password?
-                        </a>
+                        </Link>
                     </div>
                     <button type="submit" disabled={loading}>
                         {loading ? 'Logging in...' : 'Login'}
                     </button>
                     <p className="signup-link">
-                        Don't have an account? <a href="#">Sign up</a>
+                        Don't have an account? <Link to="/signup">Sign up here</Link>
                     </p>
                 </form>
             </div>
