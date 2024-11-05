@@ -2,6 +2,8 @@ import { useState } from "react";
 import { FcGoogle } from "react-icons/fc";
 import auth from '../../assets/auth.jpg'
 import './Signup.css';
+import {Link} from 'react-router-dom'
+
 
 const baseUrl = import.meta.env.VITE_API_URL;
 const endPoint = 'api/v1/signup/';
@@ -134,7 +136,7 @@ const Signup = () => {
                         </button>
                     </form>
                     <p className="login-link">
-                        Already have an account? <a href="/login">Log in</a>
+                        Already have an account? <Link to="/login">Log in</Link>
                     </p>
                 </div>
             </div>
