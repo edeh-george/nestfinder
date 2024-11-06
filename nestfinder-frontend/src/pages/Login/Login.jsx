@@ -6,7 +6,7 @@ import useClearError from '../../components/clearMessage'
 const env = import.meta.env
 
 const baseUrl = env.VITE_API_URL;
-const endPoint = 'api/v1/token';
+const endPoint = 'api/v1/token/';
 const fullUrl = new URL(endPoint, baseUrl).toString();
 
 const Login = () => {
