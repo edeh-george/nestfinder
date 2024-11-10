@@ -1,5 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import './HouseListing.css';
+import { Link } from 'react-router-dom';
+
+const baseUrl = import.meta.env.VITE_API_URL;
+const endPoint = 'api/v1/apartment/';
+const fullUrl = new URL(endPoint, baseUrl).toString();
+
 
 const HouseListing = () => {
   const [houses, setHouses] = useState([]);
@@ -11,10 +17,9 @@ const HouseListing = () => {
 
   useEffect(() => {
     const fetchHouses = async () => {
-      // Fetch data from the API based on filters
-      const response = await fetch(`YOUR_API_URL?location=${filters.location}&budget=${filters.budget.max}&apartmentType=${filters.apartmentType}`);
+      const response = await fetch(`${fullUrl}?location=${filters.location}&budget=${filters.budget.max}&apartmentType=${filters.apartmentType}`);
       const data = await response.json();
-      setHouses(data);
+      setHouses(data.results);
     };
 
     fetchHouses();
@@ -47,11 +52,13 @@ const HouseListing = () => {
         </div>
       </aside>
       <main className="house-results">
-        <h1>House Listings</h1>
         {houses.map(house => (
           <div key={house.id} className="house-item">
-            <h2>{house.name}</h2>
-            <p>{house.description}</p>
+            <img src={`${house.image}`} alt="house-main-img" />
+            <Link to={`/houses/${house.id}`} className='link-detail'>
+              <h2>{house.name}</h2>
+              <p>{house.description}</p>
+            </Link>
           </div>
         ))}
       </main>

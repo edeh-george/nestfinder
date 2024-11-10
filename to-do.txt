@@ -1,0 +1,2 @@
+1. You are to modify the styles in the signup.css to use variable parameters such as vw and vh
+2. use firebase storage to store the images for the houses in the cloud
