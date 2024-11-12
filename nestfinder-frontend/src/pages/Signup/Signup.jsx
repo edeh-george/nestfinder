@@ -3,6 +3,7 @@ import { FcGoogle } from "react-icons/fc";
 import auth from '../../assets/auth.jpg'
 import './Signup.css';
 import {Link} from 'react-router-dom'
+import useClearError from "../../components/clearMessage";
 
 
 const baseUrl = import.meta.env.VITE_API_URL;
@@ -60,6 +61,7 @@ const Signup = () => {
             setLoading(false);
         }
     };
+    useClearError(errorMessage, setErrorMessage);
 
     return (
         <>

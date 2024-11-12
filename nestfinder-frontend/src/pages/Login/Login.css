@@ -11,106 +11,103 @@ body {
     background-color: #f4f4f4;
 }
 
-.login-container{
+.login-container {
     display: flex;
     background: transparent;
-    max-width: 400px;
+    max-width: 40vw; /* Adjusts with screen width */
     position: relative;
-    top: 25vh;
-    left: 10vh;
-    transform: translate(50px, -30px);
-    justify-content: center;
-    align-items: center;
-
-}
-
-.login-container h2{
-    align-items: center;
-    margin: 10px;
-}
-
-.login-container p{
-    font-size: 13px;
-    margin-bottom: 18px;
-}
-
-.login-form{
+    top: 30vh;
+    left: -5vw;
+    transform: translate(5vw, -5vh);
     justify-content: center;
     align-items: center;
 }
 
-.input-group{
-    margin-bottom: 15px;
+.login-container h2 {
+    align-items: center;
+    margin: 1vh;
+}
+
+.login-container p {
+    font-size: 1.8vh;
+    margin-bottom: 2vh;
+}
+
+.login-form {
+    justify-content: center;
+    align-items: center;
+}
+
+.input-group {
+    margin-bottom: 1.5vh;
     display: flex;
     flex-direction: column;
 }
 
-.input-group label{
-    font-size: 14px;
+.input-group label {
+    font-size: 1.4vh;
 }
 
-.input-group input{
+.input-group input {
     width: 100%;
     outline: none;
-    border: 1px solid #D3D3D3;
-    border-radius: 25px;
-    padding: 10px;
+    border: 0.1vw solid #D3D3D3;
+    border-radius: 2vw;
+    padding: 1.5vh;
 }
 
-.input-group[type="checkbox"]{
-    font-size: 1px;
+.input-group[type="checkbox"] {
+    font-size: 0.7vh;
 }
 
-.remember-forgot{
+.remember-forgot {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    font-size: 13px;
+    font-size: 1.6vh;
     width: 100%;
-    margin-top: 10px;
+    margin-top: 1vh;
 }
 
-.remember-me{
-    font-size: 14px;
+.remember-me {
+    font-size: 1.6vh;
 }
 
-.remember-me input{
-    margin-right: 5px;
+.remember-me input {
+    margin-right: 0.5vw;
 }
 
-button{
-    border: 1px solid black;
+button {
+    border: 0.1vw solid black;
     background: black;
     width: 100%;
     color: white;
-    padding: 10px;
-    border-radius: 25px;
-    margin-top: 20px;
+    padding: 1.5vh;
+    border-radius: 2vw;
+    margin-top: 2vh;
 }
 
-button:hover{
-    opacity: 70%;
+button:hover {
+    opacity: 0.7;
 }
 
-.image-container{
+.image-container {
     display: flex;
     justify-content: flex-end;
     align-items: center;
     height: 100vh;
     position: relative;
     bottom: 50vh;
-    transform: translate(-20px, -60px);
-    
+    transform: translate(-2vw, -6vh);
 }
 
 .image-container img {
-    max-height: 400px;
+    max-height: 40vh;
     height: auto;
-    border-radius: 50px;
+    border-radius: 5vw;
 }
 
-
-.signup-link{
-    font-size: 12px;
-    margin: 10px;
+.signup-link {
+    font-size: 1.2vh;
+    margin: 1vh;
 }

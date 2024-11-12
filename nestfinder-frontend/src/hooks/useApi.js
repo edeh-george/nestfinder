@@ -1,24 +1,27 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 
+const baseUrl = import.meta.env.VITE_API_URL;
+const fullUrl = new URL('api/v1/token/refresh', baseUrl).toString();
+
 const refreshAccessToken = async () => {
   try {
     const response = await axios.post(
-      "http://localhost:8000/api/refresh-token/",
+      fullUrl,
       {},
       {
         withCredentials: true,
       }
     );
-    return response.data.accessToken; // Return the new access token
+    return response.data.accessToken;
   } catch (error) {
     console.error("Failed to refresh access token:", error);
-    throw error; // Propagate the error
+    throw error;
   }
 };
 
-const useFetchWithAuth = (url) => {
-  const [data, setData] = useState(null);
+const useApi = (url) => {
+  const [response, setResponse] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -33,7 +36,7 @@ const useFetchWithAuth = (url) => {
           Authorization: `Bearer ${accessToken}`,
         },
       });
-      setData(response.data);
+      setResponse(response);
     } catch (err) {
       if (err.response && err.response.status === 401) {
         try {
@@ -44,7 +47,7 @@ const useFetchWithAuth = (url) => {
               Authorization: `Bearer ${newAccessToken}`,
             },
           });
-          setData(retryResponse.data);
+          setResponse(retryResponse);
         } catch (refreshError) {
           console.error("Could not refresh access token:", refreshError);
           setError("Could not refresh access token");
@@ -62,7 +65,7 @@ const useFetchWithAuth = (url) => {
     fetchData();
   }, [url]);
 
-  return { data, loading, error };
+  return { response, loading, error };
 };
 
-export default useFetchWithAuth;
+export default useApi;
