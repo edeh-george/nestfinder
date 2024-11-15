@@ -3,14 +3,14 @@ import './HouseListing.css';
 import { Link } from 'react-router-dom';
 
 const baseUrl = import.meta.env.VITE_API_URL;
-const endPoint = 'api/v1/apartment/';
+const endPoint = 'apartment-list/';
 const fullUrl = new URL(endPoint, baseUrl).toString();
 
 
 const HouseListing = () => {
   const [houses, setHouses] = useState([]);
   const [filters, setFilters] = useState({
-    budget: { min: 0, max: 5000 },
+    budget: { min: 0, max: 5000000 },
     location: '',
     apartmentType: '',
   });
