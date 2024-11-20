@@ -6,7 +6,7 @@ import useClearError from '../../components/clearMessage'
 const env = import.meta.env
 
 const baseUrl = env.VITE_API_URL;
-const endPoint = 'api/v1/token/';
+const endPoint = 'token/';
 const fullUrl = new URL(endPoint, baseUrl).toString();
 
 const Login = () => {
@@ -53,7 +53,7 @@ const Login = () => {
     return (
         <>
             <div className="login-container">
-                <form className="login-form" onSubmit={handleSubmit}>
+                <form className="login-form" onSubmit={ bmit}>
                     <h2>Welcome back</h2>
                     <p>Please enter your details to journey to be nested</p>
                     {errorMessage && <p className="error-message">{errorMessage}</p>}
