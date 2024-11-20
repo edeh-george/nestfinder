@@ -105,6 +105,7 @@ button:hover {
     max-height: 40vh;
     height: auto;
     border-radius: 5vw;
+    width: 55vw;
 }
 
 .signup-link {

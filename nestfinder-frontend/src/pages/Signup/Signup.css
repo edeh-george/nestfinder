@@ -11,7 +11,7 @@
     background: transparent;
     max-width: 100vh;
     max-height: 100vh;
-    width: 400px;
+    width: 30vw;
     position: relative;
     top: 10vh;
     left: 10vh;
@@ -118,23 +118,23 @@ button{
 
 button:hover{
     opacity: 70%;
+    background-color: rgb(10, 10, 10);
 }
 
 .image-container{
     display: flex;
     justify-content: flex-end;
     align-items: center;
-    /* height: 100vh; */
     position: fixed;
     top: 50px;
     right: 20px;
-    /* bottom: 50vh; */
     transform: translate(-20px, -60px);
     
 }
 
 .image-container img {
-    max-height: 400px;
+    max-height: 100vh;
     height: auto;
     border-radius: 50px;
+    width: 55vw;
 }

@@ -11,13 +11,15 @@ const HouseDetail = () => {
     // const { apartmentId } = useParams();
     const apartmentId = "ef2589c0-13b6-448f-a510-3a6ff0758436";
     const [apartment, setApartment] = useState(null);
+    const [reviews, setReviews] = useState(null);
     const fullUrl = `${baseUrl}${endPoint}/${apartmentId}/`;
 
     useEffect(() => {
         const getApartment = async () => {
             try {
                 const response = await axios.get(fullUrl);
-                setApartment(response.data);
+                const data = await response.json();
+                setApartment(data);
             } catch (error) {
                 if (error.response) {
                     console.error(
@@ -45,7 +47,39 @@ const HouseDetail = () => {
     if (!apartment) {
         return <div>Loading...</div>;
     }
-    console.log(apartment)
+
+    useEffect(() => {
+      const getReviews = async () => {
+        try {
+          const response = await axios.get(`${baseUrl}reviews/${apartmentId}/`)
+          const data = await response.json();
+          setReviews(data);
+        } catch (error) {
+          if (error.response) {
+                    console.error(
+                        "Server error:",
+                        error.response.data,
+                        error.response.status
+                    );
+                } else if (error.request) {
+                    console.error(
+                        "No response received from the server:",
+                        error.request
+                    );
+                } else {
+                    console.error(
+                        "Error setting up request:",
+                        error.message
+                    );
+                }
+        }
+      };
+      getReviews();
+    },[apartmentId])
+
+    if (!reviews){
+      setReviews([<div>We could not fetch the reviews for this aparment</div>])
+    }
   return (
     <div className="house-detail">
       <section className="hero">
@@ -90,26 +124,28 @@ const HouseDetail = () => {
       <section className="features">
         <h2>Features</h2>
         <ul>
-          {features.map((feature, index) => (
+          {apartment.map((feature, index) => (
             <li key={index}>{feature}</li>
           ))}
         </ul>
       </section>
 
-      <section className="location-map">
-        <h2>Location</h2>
-        <iframe
-          src={mapUrl}
-          title="House Location"
-          className="map"
-          loading="lazy"
-        ></iframe>
-      </section>
-
+      {/* <section className="location-map"> */}
+        {/* <h2>Location</h2> */}
+        {/* <iframe */}
+          {/* src={mapUrl} */}
+          {/* title="House Location" */}
+          {/* className="map" */}
+          {/* loading="lazy" */}
+        {/* ></iframe> */}
+      {/* </section> */}
+{/* mostRelevant: more like
+    mostRecent: created is less than a small period
+    this should be what is passed to the ordering query param */}
       {reviews && reviews.length > 0 && (
         <section className="reviews">
           <h2>Reviews</h2>
-          {reviews.map((review, index) => (
+          {reviews.results.map((review, index) => (
             <div className="review" key={index}>
               <p>{review.comment}</p>
               <span>{'⭐'.repeat(review.rating)}</span>
