@@ -3,9 +3,8 @@ import './Login.css';
 import auth from '../../assets/auth.jpg'
 import {Link} from 'react-router-dom'
 import useClearError from '../../components/clearMessage'
-const env = import.meta.env
 
-const baseUrl = env.VITE_API_URL;
+const baseUrl = import.meta.env.VITE_API_URL;
 const endPoint = 'token/';
 const fullUrl = new URL(endPoint, baseUrl).toString();
 
@@ -53,7 +52,7 @@ const Login = () => {
     return (
         <>
             <div className="login-container">
-                <form className="login-form" onSubmit={ bmit}>
+                <form className="login-form" onSubmit={ handleSubmit}>
                     <h2>Welcome back</h2>
                     <p>Please enter your details to journey to be nested</p>
                     {errorMessage && <p className="error-message">{errorMessage}</p>}
