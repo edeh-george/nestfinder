@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import "./HouseDetail.css";
-import { CiStar } from "react-icons/ci";
 import { IoMdStar } from "react-icons/io";
 
 const baseUrl = import.meta.env.VITE_API_URL;
@@ -78,143 +77,151 @@ const Reviews = ({ reviews }) =>
       <h2>Reviews</h2>
       {reviews.map((review, index) => (
         <div className="review" key={index}>
-          <p>{review.comment}</p>
-          <span>{Array.from({length: 5}, (_, index) => {
-            <IoMdStar
-              key={index}
-              color={index<review.rating? 'yellow': 'transparent'}/>
-          })
-          /*"⭐".repeat(review.rating)*/}</span>
-        </div>
-      ))}
+          <div className="review-profile">
+            <img src={review.profile.profile_picture} alt="user-profile-image" />
+            <p>{review.profile.username}</p>
+          </div>
+            <span className="review-rating-created">
+              {Array.from({ length: 5 }, (_, index) => (
+                  <IoMdStar
+                      key={index}
+                      color={index < review.rating ? "#ffc107" : "#e4e5e9"} 
+                  />
+              ))}
+              <h5>{review.created}</h5>
+            </span>
+            <p>{review.comment}</p>
+            <br />
+          </div>
+        ))}
+      </section>
+    );
+
+  const ContactSection = ({ contact }) => (
+    <section className="contact">
+      <h2>Contact Agent</h2>
+      {contact ? (
+        <>
+          <p>Phone: {contact.phone || "N/A"}</p>
+          <p>Email: {contact.email || "N/A"}</p>
+        </>
+      ) : (
+        <p>Contact details not available.</p>
+      )}
+      <form>
+        <input type="text" placeholder="Your Name" required />
+        <input type="email" placeholder="Your Email" required />
+        <textarea placeholder="Your Message" required></textarea>
+        <button type="submit">Send Message</button>
+      </form>
     </section>
   );
 
-const ContactSection = ({ contact }) => (
-  <section className="contact">
-    <h2>Contact Agent</h2>
-    {contact ? (
-      <>
-        <p>Phone: {contact.phone || "N/A"}</p>
-        <p>Email: {contact.email || "N/A"}</p>
-      </>
-    ) : (
-      <p>Contact details not available.</p>
-    )}
-    <form>
-      <input type="text" placeholder="Your Name" required />
-      <input type="email" placeholder="Your Email" required />
-      <textarea placeholder="Your Message" required></textarea>
-      <button type="submit">Send Message</button>
-    </form>
-  </section>
-);
-
-const RelatedListings = ({ relatedHouses }) =>
-relatedHouses.length > 0 && (
-  <section className="related-listings">
-    <h2>Related Listings</h2>
-    <div className="related-houses">
-      {relatedHouses.map((related, index) => (
-        <div className="related-house" key={index}>
-          <img src={related.image} alt={related.name} />
-          <p>{related.name}</p>
-          <p>₦{related.price.toLocaleString()}</p>
-        </div>
-      ))}
-    </div>
-  </section>
-);
-
-const HouseDetail = () => {
-const { apartmentId } = useParams();
-const [apartment, setApartment] = useState(null);
-const [reviews, setReviews] = useState([]);
-const [loading, setLoading] = useState(false);
-const [currentImageIndex, setCurrentImageIndex] = useState(0);
-
-const fetchApartmentDetails = async () => {
-    try {
-        const { data } = await axios.get(`${baseUrl}${endPoint}/${apartmentId}/`);
-        const updatedImageList = data.image_url_list ? [data.image, ...data.image_url_list] : [data.image];
-        setApartment({ ...data, image_url_list: updatedImageList });
-    } catch (error) {
-            console.error("Error fetching apartment:", error);
-    } finally {
-            setLoading(false);
-        }
-   };
-
-  const fetchReviews = async () => {
-    try {
-      const { data } = await axios.get(`${baseUrl}reviews/${apartmentId}/`);
-      setReviews(data.results || []);
-    } catch (error) {
-      console.error("Error fetching reviews:", error);
-    }
-  };
-
-
-  useEffect(() => {
-    fetchApartmentDetails();
-    fetchReviews();
-  }, [apartmentId]);
-
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-
-  if (!apartment) {
-    return <div>No apartment data available.</div>;
-  }
-
-  const handleNextImage = () => {
-    setCurrentImageIndex((prevIndex) => {
-      return prevIndex + 1 < image_url_list.length ? prevIndex + 1 : prevIndex;
-    });
-  };
-
-  const handlePrevImage = () => {
-    setCurrentImageIndex((prevIndex) => {
-      return prevIndex - 1 >= 0 ? prevIndex - 1 : prevIndex;
-    });
-  };
-
-
-  const {
-    name,
-    location,
-    price,
-    apartment_type,
-    is_leased,
-    uploaded_by,
-    description,
-    image,
-    image_url_list = [],
-    relatedHouses = [],
-    contact,
-  } = apartment;
-
-  return (
-    <div className="house-detail">
-      <HeroSection
-        image_url_list={image_url_list}
-        name={name}
-        location={location}
-        price={price}
-        currentImageIndex={currentImageIndex}
-        handleNextImage={handleNextImage}
-        handlePrevImage={handlePrevImage}
-      />
-      <KeyDetails
-          details={{ apartment_type, location, price, is_leased, uploaded_by }}
-      />
-      <Description description={description} />
-      <Reviews reviews={reviews} />
-      <ContactSection contact={contact} />
-      <RelatedListings relatedHouses={relatedHouses} />
-    </div>
+  const RelatedListings = ({ relatedHouses }) =>
+  relatedHouses.length > 0 && (
+    <section className="related-listings">
+      <h2>Related Listings</h2>
+      <div className="related-houses">
+        {relatedHouses.map((related, index) => (
+          <div className="related-house" key={index}>
+            <img src={related.image} alt={related.name} />
+            <p>{related.name}</p>
+            <p>₦{related.price.toLocaleString()}</p>
+          </div>
+        ))}
+      </div>
+    </section>
   );
-};
 
-export default HouseDetail;
+  const HouseDetail = () => {
+  const { apartmentId } = useParams();
+  const [apartment, setApartment] = useState(null);
+  const [reviews, setReviews] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  const fetchApartmentDetails = async () => {
+      try {
+          const { data } = await axios.get(`${baseUrl}${endPoint}/${apartmentId}/`);
+          const updatedImageList = data.image_url_list ? [data.image, ...data.image_url_list] : [data.image];
+          setApartment({ ...data, image_url_list: updatedImageList });
+      } catch (error) {
+              console.error("Error fetching apartment:", error);
+      } finally {
+              setLoading(false);
+          }
+    };
+
+    const fetchReviews = async () => {
+      try {
+        const { data } = await axios.get(`${baseUrl}reviews/${apartmentId}/`);
+        setReviews(data.results || []);
+      } catch (error) {
+        console.error("Error fetching reviews:", error);
+      }
+    };
+
+
+    useEffect(() => {
+      fetchApartmentDetails();
+      fetchReviews();
+    }, [apartmentId]);
+
+    if (loading) {
+      return <div>Loading...</div>;
+    }
+
+    if (!apartment) {
+      return <div>No apartment data available.</div>;
+    }
+
+    const handleNextImage = () => {
+      setCurrentImageIndex((prevIndex) => {
+        return prevIndex + 1 < image_url_list.length ? prevIndex + 1 : prevIndex;
+      });
+    };
+
+    const handlePrevImage = () => {
+      setCurrentImageIndex((prevIndex) => {
+        return prevIndex - 1 >= 0 ? prevIndex - 1 : prevIndex;
+      });
+    };
+
+
+    const {
+      name,
+      location,
+      price,
+      apartment_type,
+      is_leased,
+      uploaded_by,
+      description,
+      image,
+      image_url_list = [],
+      relatedHouses = [],
+      contact,
+    } = apartment;
+
+    return (
+      <div className="house-detail">
+        <HeroSection
+          image_url_list={image_url_list}
+          name={name}
+          location={location}
+          price={price}
+          currentImageIndex={currentImageIndex}
+          handleNextImage={handleNextImage}
+          handlePrevImage={handlePrevImage}
+        />
+        <KeyDetails
+            details={{ apartment_type, location, price, is_leased, uploaded_by }}
+        />
+        <Description description={description} />
+        <Reviews reviews={reviews} />
+        <ContactSection contact={contact} />
+        <RelatedListings relatedHouses={relatedHouses} />
+      </div>
+    );
+  };
+
+  export default HouseDetail;

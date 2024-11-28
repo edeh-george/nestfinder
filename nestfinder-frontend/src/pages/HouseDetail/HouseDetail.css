@@ -159,3 +159,27 @@ body {
   box-shadow: 0 0.5vh 1vh rgba(0, 0, 0, 0.1);
   padding: 2vh;
 }
+
+
+/* Review Section */
+.review-profile{
+  display: flex;
+}
+.review-profile img{
+  flex: 1;
+  max-width: 1vw;
+  border-radius: 50%;
+}
+
+.review-profile p{
+  margin-left: .5vw;
+}
+
+.review-rating-created{
+  display: flex;
+  margin-bottom: 2px;
+}
+
+.review-rating-created h5{
+  margin-left: 2vw;
+}
