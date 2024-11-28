@@ -2,38 +2,40 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import "./HouseDetail.css";
+import { CiStar } from "react-icons/ci";
+import { IoMdStar } from "react-icons/io";
 
 const baseUrl = import.meta.env.VITE_API_URL;
 const endPoint = "apartment";
 
 const HeroSection = ({
-  image,
   image_url_list,
   name,
   location,
   price,
   currentImageIndex,
-  setCurrentImageIndex,
   handleNextImage,
   handlePrevImage,
 }) => (
   <section className="hero-section">
-    <img
-        src={image_url_list[currentImageIndex]}
-        alt={`House ${currentImageIndex + 1}`}
-        className="hero-image"
-    />
-    <span
-        className={`prev-arrow ${currentImageIndex === 0 ? "disabled" : ""}`}
-        onClick={handlePrevImage}>
-      &lt;
-    </span>
-    <span
-        className={`next-arrow ${
-        currentImageIndex === image_url_list.length - 1 ? "disabled" : ""}`}
-        onClick={handleNextImage}>
-      &gt;
-    </span>
+    <div className="hero-image-section">
+      <img
+          src={image_url_list[currentImageIndex]}
+          alt={`House ${currentImageIndex + 1}`}
+          className="hero-image"
+      />
+      <span
+          className={`prev-arrow ${currentImageIndex === 0 ? "disabled" : ""}`}
+          onClick={handlePrevImage}>
+        &lt;
+      </span>
+      <span
+          className={`next-arrow ${
+          currentImageIndex === image_url_list.length - 1 ? "disabled" : ""}`}
+          onClick={handleNextImage}>
+        &gt;
+      </span>
+    </div>
 
     <aside className="hero-details">
       <div className="hero-text">
@@ -77,7 +79,12 @@ const Reviews = ({ reviews }) =>
       {reviews.map((review, index) => (
         <div className="review" key={index}>
           <p>{review.comment}</p>
-          <span>{"⭐".repeat(review.rating)}</span>
+          <span>{Array.from({length: 5}, (_, index) => {
+            <IoMdStar
+              key={index}
+              color={index<review.rating? 'yellow': 'transparent'}/>
+          })
+          /*"⭐".repeat(review.rating)*/}</span>
         </div>
       ))}
     </section>
@@ -191,13 +198,11 @@ const fetchApartmentDetails = async () => {
   return (
     <div className="house-detail">
       <HeroSection
-        image={image}
         image_url_list={image_url_list}
         name={name}
         location={location}
         price={price}
         currentImageIndex={currentImageIndex}
-        setCurrentImageIndex={setCurrentImageIndex}
         handleNextImage={handleNextImage}
         handlePrevImage={handlePrevImage}
       />

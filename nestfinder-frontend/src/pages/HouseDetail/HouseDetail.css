@@ -20,13 +20,14 @@ body {
 .hero-section {
   position: relative;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  align-items: center;
   gap: 2vh;
-  transition: filter 0.3s ease; /* Smooth transition for blur effect */
+  transition: filter 0.3s ease;
 }
 
-.hero-image img{
-  max-width: 50%;
+.hero-image{
+  max-width: 60vw;
   height: auto;
   object-fit: cover;
   border-radius: 1em;
@@ -52,11 +53,11 @@ body {
 }
 
 .prev-arrow {
-  left: 2%;
+  left: .1%;
 }
 
 .next-arrow {
-  right: 2%;
+  right: 32%;
 }
 
 .prev-arrow:hover,
@@ -79,6 +80,7 @@ body {
   align-items: flex-start;
   flex-wrap: wrap;
   gap: 2vh;
+  margin-left: 5vw;
 }
 
 .hero-text {
@@ -91,28 +93,34 @@ body {
 }
 
 .hero-text p {
-  margin: 0.5vh 0;
+  margin: 0.5vh ;
   font-size: 1.2em;
 }
 
 .hero-buttons {
+  position: absolute;
   display: flex;
+  left: 51vw;
+  bottom: -0vh;
   gap: 1vw;
 }
 
-.hero-buttons button {
-  background-color: #0070f3;
+.hero-buttons{
+  display: flex;
+  flex-direction: column;
   color: white;
   border: none;
-  padding: 1vh 2vw;
+  width: 45vw;
+  padding: 2vh 10vw;
   border-radius: 0.5em;
   font-size: 1em;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  margin-left: 1vw;
 }
 
 .hero-buttons button:hover {
-  background-color: #005bb5;
+  background-color: #0a1520;
 }
 
 /* Key Details Section */
