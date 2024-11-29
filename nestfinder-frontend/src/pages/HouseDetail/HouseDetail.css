@@ -183,3 +183,13 @@ body {
 .review-rating-created h5{
   margin-left: 2vw;
 }
+
+/* Contact section */
+.agent-details{
+  font-size: 14px;
+}
+
+.contact-form{
+  display: flex;
+  flex-direction: column;
+}

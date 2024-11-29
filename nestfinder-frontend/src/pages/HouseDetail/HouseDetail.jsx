@@ -52,7 +52,7 @@ const HeroSection = ({
 );
 
 const KeyDetails = ({ details }) => (
-  <section className="key-details">
+  <section className="key-details">=         
     <h2>Key Details</h2>
     <ul>
       <li>Type: {details.apartment_type}</li>
@@ -79,7 +79,7 @@ const Reviews = ({ reviews }) =>
         <div className="review" key={index}>
           <div className="review-profile">
             <img src={review.profile.profile_picture} alt="user-profile-image" />
-            <p>{review.profile.username}</p>
+            <p>{review.profile.user}</p>
           </div>
             <span className="review-rating-created">
               {Array.from({ length: 5 }, (_, index) => (
@@ -97,18 +97,18 @@ const Reviews = ({ reviews }) =>
       </section>
     );
 
-  const ContactSection = ({ contact }) => (
+  const ContactSection = ({ userAgent }) => (
     <section className="contact">
       <h2>Contact Agent</h2>
-      {contact ? (
-        <>
-          <p>Phone: {contact.phone || "N/A"}</p>
-          <p>Email: {contact.email || "N/A"}</p>
-        </>
+      {userAgent ? (
+        <div className="agent-details">
+          <p>Phone number: {userAgent.phone_number || "N/A"}</p>
+          <p>Email: {userAgent.email || "N/A"}</p>
+        </div>
       ) : (
         <p>Contact details not available.</p>
       )}
-      <form>
+      <form className="contact-form">
         <input type="text" placeholder="Your Name" required />
         <input type="email" placeholder="Your Email" required />
         <textarea placeholder="Your Message" required></textarea>
@@ -133,24 +133,28 @@ const Reviews = ({ reviews }) =>
     </section>
   );
 
-  const HouseDetail = () => {
-  const { apartmentId } = useParams();
-  const [apartment, setApartment] = useState(null);
-  const [reviews, setReviews] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
-  const fetchApartmentDetails = async () => {
-      try {
-          const { data } = await axios.get(`${baseUrl}${endPoint}/${apartmentId}/`);
-          const updatedImageList = data.image_url_list ? [data.image, ...data.image_url_list] : [data.image];
-          setApartment({ ...data, image_url_list: updatedImageList });
-      } catch (error) {
-              console.error("Error fetching apartment:", error);
-      } finally {
-              setLoading(false);
-          }
-    };
+const HouseDetail = () => {
+    const { apartmentId } = useParams();
+    const [userId, setUserId] = useState(null)
+    const [apartment, setApartment] = useState(null);
+    const [reviews, setReviews] = useState([]);
+    const [userAgent, setUserAgent] = useState(null);
+    const [loading, setLoading] = useState(false);
+    const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+    const fetchApartmentDetails = async () => {
+        try {
+            const { data } = await axios.get(`${baseUrl}${endPoint}/${apartmentId}/`);
+            const updatedImageList = data.image_url_list ? [data.image, ...data.image_url_list] : [data.image];
+            setApartment({ ...data, image_url_list: updatedImageList });
+            setUserId(data.id)
+        } catch (error) {
+                console.error("Error fetching apartment:", error);
+        } finally {
+                setLoading(false);
+            }
+      };
 
     const fetchReviews = async () => {
       try {
@@ -161,11 +165,26 @@ const Reviews = ({ reviews }) =>
       }
     };
 
+    const fetchUser = async () => {
+      try {
+        const { data } = await axios.get(`${baseUrl}user/${userId}`);
+        setUserAgent(data);
+      } catch (error) {
+        console.error("Error fetching reviews:", error);
+      }
+    };
+
 
     useEffect(() => {
       fetchApartmentDetails();
       fetchReviews();
     }, [apartmentId]);
+
+    useEffect(() => {
+        if (userId) {
+            fetchUser();
+        }
+    }, [userId]);
 
     if (loading) {
       return <div>Loading...</div>;
@@ -196,10 +215,8 @@ const Reviews = ({ reviews }) =>
       is_leased,
       uploaded_by,
       description,
-      image,
       image_url_list = [],
       relatedHouses = [],
-      contact,
     } = apartment;
 
     return (
@@ -218,10 +235,11 @@ const Reviews = ({ reviews }) =>
         />
         <Description description={description} />
         <Reviews reviews={reviews} />
-        <ContactSection contact={contact} />
+        <ContactSection userAgent={userAgent} />
         <RelatedListings relatedHouses={relatedHouses} />
       </div>
     );
   };
 
-  export default HouseDetail;
+
+export default HouseDetail;
