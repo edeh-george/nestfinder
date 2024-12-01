@@ -52,7 +52,7 @@ const HeroSection = ({
 );
 
 const KeyDetails = ({ details }) => (
-  <section className="key-details">=         
+  <section className="key-details">         
     <h2>Key Details</h2>
     <ul>
       <li>Type: {details.apartment_type}</li>

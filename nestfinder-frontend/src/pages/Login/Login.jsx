@@ -27,6 +27,7 @@ const Login = () => {
                 body: JSON.stringify({
                     email: email,
                     password: password,
+                    //remember_me should be part of this body
                 }),
             });
 

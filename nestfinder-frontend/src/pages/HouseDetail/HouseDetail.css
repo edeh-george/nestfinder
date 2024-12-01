@@ -192,4 +192,15 @@ body {
 .contact-form{
   display: flex;
   flex-direction: column;
+  gap: .5vw;
+  margin-top: 2vw;
+}
+
+.contact-form input,textarea{
+  outline: none;
+  border: .1vw solid #d3d3d3;
+  border-radius: 2vw;
+  padding: 1.5vh;
+  width: 100%;
+  resize: none;
 }
