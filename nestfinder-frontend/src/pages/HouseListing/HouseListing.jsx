@@ -77,7 +77,7 @@ const HouseListing = () => {
         </div>
       </aside>
       <main className="house-results">
-        <div className="search-house-name">
+        {/* <div className="search-house-name">
                 <input
                     type="text"
                     placeholder="Search..."
@@ -85,7 +85,7 @@ const HouseListing = () => {
                     onChange={(e) => filters.name=e.target.value}
                 />
                 <button onClick={handleFilterChange}><FaSearch/></button>
-            </div>
+            </div> */}
         {houses.map(house => (
           <div key={house.id} className="house-item">
             <img src={`${house.image}`} alt="house-main-img" />

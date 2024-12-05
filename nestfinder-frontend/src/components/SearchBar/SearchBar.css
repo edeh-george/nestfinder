@@ -1,0 +1,27 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.search-house-name {
+  position: absolute;
+  top: 2vh;
+  right: 2vw;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.search-house-name input {
+  border-radius: 6px;
+  padding: 8px;
+  border: 1px solid #ddd;
+}
+
+.search-house-name button{
+  background-color: transparent;
+  color: black;
+  border: none;
+  transform: scale(1.3);
+}
