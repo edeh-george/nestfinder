@@ -19,10 +19,3 @@
   border: 1px solid #ddd;
   margin-top: 0.5vw;
 }
-
-.search-house-name button{
-  background-color: transparent;
-  color: black;
-  border: none;
-  transform: scale(1.3);
-}

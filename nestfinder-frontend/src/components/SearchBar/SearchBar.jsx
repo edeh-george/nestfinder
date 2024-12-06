@@ -1,32 +1,29 @@
-import React, { useState, useEffect } from "react";
-import { FaSearch } from "react-icons/fa";  
-import "./SearchBar.css"
-
-
-export let exportName = null;
+import React from "react";
+import { FaSearch } from "react-icons/fa";
+import { useSearchParams } from "react-router-dom";
+import "./SearchBar.css";
 
 const SearchBar = () => {
-  const [searchName, setSearchName] = useState("");
-  
+  const [searchParams, setSearchParams] = useSearchParams();
 
-  const handleSearch = (e) => {
-    (e) => setSearchName(e.target.value);
+  const handleSearchChange = (e) => {
+    const { value } = e.target;
+    setSearchParams((prev) => {
+      const updated = new URLSearchParams(prev);
+      updated.set("name", value);
+      return updated;
+    });
   };
-
-  useEffect(()=> {
-    exportName = searchName;
-  }, [searchName]);
-
 
   return (
     <div className="search-house-name">
       <input
         type="text"
-        placeholder="Search..."
-        value={searchName}
-        onChange={handleSearch}
+        placeholder="Search by name..."
+        value={searchParams.get("name") || ""}
+        onChange={handleSearchChange}
+        name="name"
       />
-      <span onClick={handleSearch}><FaSearch/></span>
     </div>
   );
 };

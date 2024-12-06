@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import "./HouseListing.css";
-import { exportName } from "../../components/SearchBar/SearchBar";
 
 const baseUrl = import.meta.env.VITE_API_URL;
 const endPoint = "apartment-list/";
@@ -27,13 +26,19 @@ const HouseListing = () => {
 
   useEffect(() => {
     const fetchHouses = async () => {
-      let urlAndQuery =
-        `${fullUrl}?location=${filters.location}&apartmentType=${filters.apartmentType}&ordering=${filters.ordering}` +
-        `&name=${filters.name}&date_from=${filters.dateFrom}&date_to=${filters.dateTo}&is_leased=${filters.isLeased}&start_price=${filters.budget.startPrice}`;
-      if (filters.budget.endPrice) {
-        urlAndQuery += `&end_price=${filters.budget.endPrice}`;
-      }
-      const response = await fetch(urlAndQuery);
+      let query = new URLSearchParams({
+        name: filters.name,
+        location: filters.location,
+        apartmentType: filters.apartmentType,
+        start_price: filters.budget.startPrice,
+        end_price: filters.budget.endPrice,
+        is_leased: filters.isLeased,
+        date_from: filters.dateFrom,
+        date_to: filters.dateTo,
+        ordering: filters.ordering,
+      }).toString();
+
+      const response = await fetch(`${fullUrl}?${query}`);
       const data = await response.json();
       setHouses(data.results);
     };
