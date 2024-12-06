@@ -1,31 +1,33 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FaSearch } from "react-icons/fa";  
 import "./SearchBar.css"
-import { handleFilterChange } from "../../pages/HouseListing/HouseListing.jsx"
 
-const SearchBar = ({ onSearch }) => {
-  const [searchQuery, setSearchQuery] = useState("");
 
-  // const handleInputChange = (e) => {
-  //   setSearchQuery(e.target.value);
-  // };
+export let exportName = null;
 
-  // const handleSearch = () => {
-  //   if (onSearch) {
-  //     onSearch(searchQuery);
-  //   }
-  // };
+const SearchBar = () => {
+  const [searchName, setSearchName] = useState("");
+  
+
+  const handleSearch = (e) => {
+    (e) => setSearchName(e.target.value);
+  };
+
+  useEffect(()=> {
+    exportName = searchName;
+  }, [searchName]);
+
 
   return (
     <div className="search-house-name">
-                <input
-                    type="text"
-                    placeholder="Search..."
-                    value={filters.name}
-                    onChange={(e) => filters.name=e.target.value}
-                />
-                <span onClick={handleFilterChange}><FaSearch/></span>
-            </div>
+      <input
+        type="text"
+        placeholder="Search..."
+        value={searchName}
+        onChange={handleSearch}
+      />
+      <span onClick={handleSearch}><FaSearch/></span>
+    </div>
   );
 };
 

@@ -1,15 +1,17 @@
 import "./Header.css"
+import SearchBar from "../SearchBar/SearchBar";
 
 const Header = () => {
 
     return (
         <header>
-            <div class="header-section">
-                <img src="./nestfinder.png" alt="header-logo" />
+            <div className="header-section">
+                <img src="../nestfinder.png" alt="header-logo" />
+                <SearchBar/>
                 <nav>
                 <ul>
+                    <li><a href="#">Home</a></li>
                     <li><a href="#">About Us</a></li>
-                    <li><a href="houses/">Home</a></li>
                 </ul>
                 </nav>
             </div>

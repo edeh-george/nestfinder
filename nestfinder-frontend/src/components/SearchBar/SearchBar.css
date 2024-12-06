@@ -14,9 +14,10 @@
 }
 
 .search-house-name input {
-  border-radius: 6px;
-  padding: 8px;
+  scale: .9;
+  border-radius: 25px;
   border: 1px solid #ddd;
+  margin-top: 0.5vw;
 }
 
 .search-house-name button{

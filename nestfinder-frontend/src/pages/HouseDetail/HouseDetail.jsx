@@ -109,8 +109,8 @@ const Reviews = ({ reviews }) =>
         <p>Contact details not available.</p>
       )}
       <form className="contact-form">
-        <input type="text" placeholder="Your Name" required />
-        <input type="email" placeholder="Your Email" required />
+        <input type="text" placeholder="Your Name" value="" required />
+        <input type="email" placeholder="Your Email" value="" required />
         <textarea placeholder="Your Message" required></textarea>
         <button type="submit">Send Message</button>
       </form>
