@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 
 const baseUrl = import.meta.env.VITE_API_URL;
-const fullUrl = new URL('token/refresh/', baseUrl).toString();
+const fullUrl = new URL('token/refresh', baseUrl).toString();
 
 const refreshAccessToken = async () => {
   try {
