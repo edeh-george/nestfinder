@@ -2,12 +2,12 @@ import { useState } from "react";
 import { FcGoogle } from "react-icons/fc";
 import auth from '../../assets/auth.jpg'
 import './Signup.css';
-import {Link} from 'react-router-dom'
+import {Link, useNavigate} from 'react-router-dom'
 import useClearError from "../../components/clearMessage";
 
 
 const baseUrl = import.meta.env.VITE_API_URL;
-const endPoint = 'api/v1/signup/';
+const endPoint = 'signup/';
 const fullUrl = new URL(endPoint, baseUrl).toString();
 
 const Signup = () => {
@@ -20,6 +20,7 @@ const Signup = () => {
     const [errorMessage, setErrorMessage] = useState('');
     const [count, setCount] = useState(0);
     const [loading, setLoading] = useState(false);
+    const navigate = useNavigate();
 
     const onSubmit = async (e) => {
         e.preventDefault();
