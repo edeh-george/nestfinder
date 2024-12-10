@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import './Login.css';
 import auth from '../../assets/auth.jpg'
-import {Link} from 'react-router-dom'
+import {Link, redirect} from 'react-router-dom'
 import useClearError from '../../components/clearMessage'
+import  { useNavigate } from 'react-router-dom'
 
 const baseUrl = import.meta.env.VITE_API_URL;
 const endPoint = 'token/';
@@ -13,6 +14,7 @@ const Login = () => {
     const [password, setPassword] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
     const [loading, setLoading] = useState(false);
+    const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -33,11 +35,8 @@ const Login = () => {
 
             if (response.ok) {
                 const data = await response.json();
-                // Handle success (e.g., save token, redirect)
-                //access token should not be stored in localStoreage
-                //rather your custom hook should generate access tokens on each request making it more secure and robust.
-                console.log("Login successful:", data); //This is for development purposes
-                //navigate user to the home or dashboard page
+                console.log("Login successful:")
+                navigate("/houses/", { replace: true });
             } else {
                 const errorData = await response.json();
                 setErrorMessage(errorData.message || 'Login failed');

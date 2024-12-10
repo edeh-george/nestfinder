@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { Link, useSearchParams } from "react-router-dom";
+import { Link, resolvePath, useSearchParams } from "react-router-dom";
 import "./HouseListing.css";
+import useApi from "../../hooks/useApi";
 
 const baseUrl = import.meta.env.VITE_API_URL;
 const endPoint = "apartment-list/";
@@ -24,27 +25,29 @@ const HouseListing = () => {
     ordering: searchParams.get("ordering") || "",
   };
 
+  let query = new URLSearchParams({
+    name: filters.name,
+    location: filters.location,
+    apartmentType: filters.apartmentType,
+    start_price: filters.budget.startPrice,
+    end_price: filters.budget.endPrice,
+    is_leased: filters.isLeased,
+    date_from: filters.dateFrom,
+    date_to: filters.dateTo,
+    ordering: filters.ordering,
+  }).toString();
+
+  const { response, loading, error } = useApi(`${fullUrl}?${query}`);
+  if (response){
+    console.log(response?.headers);
+  }
+  
+
   useEffect(() => {
-    const fetchHouses = async () => {
-      let query = new URLSearchParams({
-        name: filters.name,
-        location: filters.location,
-        apartmentType: filters.apartmentType,
-        start_price: filters.budget.startPrice,
-        end_price: filters.budget.endPrice,
-        is_leased: filters.isLeased,
-        date_from: filters.dateFrom,
-        date_to: filters.dateTo,
-        ordering: filters.ordering,
-      }).toString();
-
-      const response = await fetch(`${fullUrl}?${query}`);
-      const data = await response.json();
-      setHouses(data.results);
-    };
-
-    fetchHouses();
-  }, [searchParams]);
+    if (response?.data){
+      setHouses(response.data.results);
+    }    
+  }, [response]);
 
   const handleFilterChange = (e) => {
     const { name, value } = e.target;
