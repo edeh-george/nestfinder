@@ -49,6 +49,7 @@ const Signup = () => {
             if (response.ok) {
                 const data = await response.json();
                 setSuccessMessage('Your account has successfully been created');
+                navigate("/houses/", { replace: true });
                 setErrorMessage('');
             } else {
                 console.log(response.data);
