@@ -37,17 +37,14 @@ const HouseListing = () => {
     ordering: filters.ordering,
   }).toString();
 
-  const { response, loading, error } = useApi(`${fullUrl}?${query}`);
-  if (response){
-    console.log(response?.headers);
-  }
-  
+  const response = useApi(`${fullUrl}?${query}`);
+
 
   useEffect(() => {
-    if (response?.data){
-      setHouses(response.data.results);
+    if (response){
+      setHouses(response.results);
     }    
-  }, [response]);
+  }, [searchParams]);
 
   const handleFilterChange = (e) => {
     const { name, value } = e.target;

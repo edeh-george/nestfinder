@@ -2,9 +2,9 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 
 const baseUrl = import.meta.env.VITE_API_URL;
-const fullUrl = new URL('token/refresh/', baseUrl).toString();
+const fullUrl = new URL('token/refresh', baseUrl).toString();
 
-const getAcessToken = async () => {
+const refreshAccessToken = async () => {
   try {
     const response = await axios.post(
       fullUrl,
@@ -13,10 +13,10 @@ const getAcessToken = async () => {
         withCredentials: true,
       }
     );
-    return response.data.access;
+    return response.data.accessToken;
   } catch (error) {
-      console.error("Failed to refresh access token:", error);
-      throw error;
+    console.error("Failed to refresh access token:", error);
+    throw error;
   }
 };
 
@@ -29,23 +29,36 @@ const useApi = (url) => {
     setLoading(true);
     setError(null);
 
-    try{   
-      const newAccessToken = await getAcessToken();
-      const getResponse = await axios.get(url, {
+    try {
+      const accessToken = localStorage.getItem("accessToken");
+      const response = await axios.get(url, {
         headers: {
-          Authorization: `Bearer ${newAccessToken}`,
+          Authorization: `Bearer ${accessToken}`,
         },
       });
-      if (getResponse){
-        setResponse(getResponse);
-      }
-      } catch (error) {
-        console.error("Could not refresh access token:", error);
-        setError("Could not refresh access token");
-        // Optionally, handle logout or redirect to login here
-      } finally {
-          setLoading(false);
+      setResponse(response);
+    } catch (err) {
+      if (err.response && err.response.status === 401) {
+        try {
+          const newAccessToken = await refreshAccessToken();
+          localStorage.setItem("accessToken", newAccessToken);
+          const retryResponse = await axios.get(url, {
+            headers: {
+              Authorization: `Bearer ${newAccessToken}`,
+            },
+          });
+          setResponse(retryResponse);
+        } catch (refreshError) {
+          console.error("Could not refresh access token:", refreshError);
+          setError("Could not refresh access token");
+          // Optionally, handle logout or redirect to login here
         }
+      } else {
+        setError("Error fetching data");
+      }
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
