@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link, resolvePath, useSearchParams } from "react-router-dom";
 import "./HouseListing.css";
-import useApi from "../../hooks/useApi";
+import axios from "axios";
 
 const baseUrl = import.meta.env.VITE_API_URL;
 const endPoint = "apartment-list/";
@@ -37,13 +37,28 @@ const HouseListing = () => {
     ordering: filters.ordering,
   }).toString();
 
-  const response = useApi(`${fullUrl}?${query}`);
+  const get_data = async () => {
+    try{
+      const response = await axios.get(`${fullUrl}?${query}`,
+        {
+          withCredentials:true,
+        }
+      );
+      return response.data;
+  } catch(err){
+    console.error(`${err}`)
+    }
+  }
 
 
   useEffect(() => {
-    if (response){
-      setHouses(response.results);
-    }    
+    const fetchData = async () => {
+      const response = await get_data();
+      if (response){
+        setHouses(response.results);
+      }
+    };    
+    fetchData();
   }, [searchParams]);
 
   const handleFilterChange = (e) => {

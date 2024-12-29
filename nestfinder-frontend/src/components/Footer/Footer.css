@@ -1,0 +1,35 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+.footer{
+    background-color:#9ec2dc;
+    color: white;
+    text-align: center;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    justify-content: center;
+    bottom: 0;
+    width: 100%;
+}
+
+.footer-socials{
+    justify-content: center;
+    gap: 50px;
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    
+}
+
+.footer-socails a {
+    display: inherit;
+    align-items: center;
+    gap: 10px;
+    color: white;
+    text-decoration: none;
+}

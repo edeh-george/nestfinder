@@ -31,13 +31,11 @@ const Login = () => {
                     password: password,
                     //remember_me should be part of this body
                 }),
+                credentials: 'include',
             });
 
             if (response.ok) {
                 const data = await response.json();
-                //access token should not be stored in localStoreage
-                //rather your custom hook should generate access tokens on each request making it more secure and robust.
-                console.log("Login successful:", data); //This is for development purposes
                 navigate("/houses/", { replace: true });
             } else {
                 const errorData = await response.json();
