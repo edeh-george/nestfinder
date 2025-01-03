@@ -10,6 +10,8 @@ const fullUrl = new URL(endPoint, baseUrl).toString();
 const HouseListing = () => {
   const [houses, setHouses] = useState([]);
   const [searchParams, setSearchParams] = useSearchParams();
+  const [nextPage, setNextPage] = useState(null);
+  const [previousPage, setPreviousPage] = useState(null);
 
   const filters = {
     budget: {
@@ -23,6 +25,8 @@ const HouseListing = () => {
     dateFrom: searchParams.get("date_from") || "",
     dateTo: searchParams.get("date_to") || "",
     ordering: searchParams.get("ordering") || "",
+    offset: searchParams.get("offset") || 0,
+    limit: searchParams.get("limit") || 0
   };
 
   let query = new URLSearchParams({
@@ -35,6 +39,8 @@ const HouseListing = () => {
     date_from: filters.dateFrom,
     date_to: filters.dateTo,
     ordering: filters.ordering,
+    offset: filters.offset,
+    limit: filters.limit
   }).toString();
 
   const get_data = async () => {
@@ -55,6 +61,8 @@ const HouseListing = () => {
     const fetchData = async () => {
       const response = await get_data();
       if (response){
+        setNextPage(response.next);
+        setPreviousPage(response.previous);
         setHouses(response.results);
       }
     };    
@@ -63,7 +71,7 @@ const HouseListing = () => {
 
   const handleFilterChange = (e) => {
     const { name, value } = e.target;
-
+    
     if (name.startsWith("budget.")) {
       const [_, key] = name.split(".");
       setSearchParams((prev) => {
@@ -79,6 +87,20 @@ const HouseListing = () => {
       });
     }
   };
+
+
+  const handlePageChange = (page) => {
+    const urlObj = new URL(page);
+    const params = {
+        limit: parseInt(urlObj.searchParams.get("limit"), 10),
+        offset: parseInt(urlObj.searchParams.get("offset"), 10),
+  };
+    const updated = new URLSearchParams(searchParams);
+    updated.set("offset", params.offset??0);
+    updated.set("limit", params.limit);
+    setSearchParams(updated);
+  };
+
 
   if (!houses) {
     return <div>There seems to be an issue fetching the data</div>;
@@ -107,12 +129,19 @@ const HouseListing = () => {
         </div>
         <div>
           <label>Location:</label>
-          <input
-            type="text"
-            name="location"
-            value={filters.location}
-            onChange={handleFilterChange}
-          />
+          <select
+           name="location"
+           value={filters.location}
+           onChange={handleFilterChange}
+           >
+            <option value=""> All</option>
+            <option value="Odim"> Odim</option>
+            <option value="Odenigwe">Odenigwe</option>
+            <option value="behind flat">Behind Flat</option>
+            <option value="green house">Green House</option>
+            <option value="hilltop">Hilltop</option>
+            <option value="staff quarters">Staff Quarters</option>
+          </select>
         </div>
         <div>
           <label>Apartment Type:</label>
@@ -159,6 +188,20 @@ const HouseListing = () => {
             </Link>
           </div>
         ))}
+        <div className="pagination">
+          <button
+            onClick={() => handlePageChange(previousPage)}
+            disabled={previousPage === null}
+          >
+            Previous
+          </button>
+          <button
+            onClick={() => handlePageChange(nextPage)}
+            disabled={nextPage === null}
+          >
+            Next
+          </button>
+        </div>
       </main>
     </div>
   );
