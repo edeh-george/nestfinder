@@ -15,9 +15,10 @@ const HeroSection = ({
   currentImageIndex,
   handleNextImage,
   handlePrevImage,
+  scrollToForm,
 }) => (
   <section className="hero-section">
-    <div className="hero-image-section">
+    <div className="hero-image-container">
       <img
           src={image_url_list[currentImageIndex]}
           alt={`House ${currentImageIndex + 1}`}
@@ -42,10 +43,10 @@ const HeroSection = ({
         <p className="apartment-location">{location}</p>
         <p className="apartment-price">₦{price.toLocaleString()}</p>
       </div>
-      <div className="hero-buttons">
+      <div className="hero-buttons" id="hero-buttons">
         <button>Schedule a Visit</button>
-        <button>Contact Agent</button>
-        <button>Save to Favorites</button>
+        <button onClick={scrollToForm}>Contact Agent</button>
+        <button>Make Payments </button>
       </div>
     </aside>
   </section>
@@ -108,8 +109,8 @@ const Reviews = ({ reviews }) =>
       ) : (
         <p>Contact details not available.</p>
       )}
-      <form className="contact-form">
-        <input type="text" placeholder="Your Name" value="" required />
+      <form className="contact-form" id="contact-form">
+        <input id="contact-name" type="text" placeholder="Your Name" value="" required />
         <input type="email" placeholder="Your Email" value="" required />
         <textarea placeholder="Your Message" required></textarea>
         <button type="submit">Send Message</button>
@@ -206,6 +207,21 @@ const HouseDetail = () => {
       });
     };
 
+    const scrollToForm = () => {
+      const formSection = document.getElementById("contact-form");
+      formSection.scrollIntoView({ behavior: "smooth" });
+
+      setTimeout(() => {
+        const firstInput = document.getElementById("contact-name");
+        if (firstInput) firstInput.focus();
+      }, 300);
+    }
+
+    const makePayment = () => {
+      
+    
+    };
+
 
     const {
       name,
@@ -229,7 +245,8 @@ const HouseDetail = () => {
           currentImageIndex={currentImageIndex}
           handleNextImage={handleNextImage}
           handlePrevImage={handlePrevImage}
-        />
+          scrollToForm={scrollToForm}
+          />
         <KeyDetails
             details={{ apartment_type, location, price, is_leased, uploaded_by }}
         />
