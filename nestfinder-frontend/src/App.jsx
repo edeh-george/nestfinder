@@ -5,6 +5,7 @@ import Signup from "./pages/Signup/Signup";
 import ForgotPassword from "./pages/ForgotPassword/ForgotPassword";
 import HouseListing from "./pages/HouseListing/HouseListing";
 import HouseDetail from "./pages/HouseDetail/HouseDetail";
+import Payment from "./pages/Payment/Payment";
 
 function App() {
   return (
@@ -17,6 +18,12 @@ function App() {
           <Route index element={<HouseListing />} />
           <Route path=":apartmentId" element={<HouseDetail />} />
         </Route>
+
+        <Route path="/payment" element={<Layout />}>
+          <Route index element={<Payment />} />
+          {/* <Route path="verify/" element={<HouseDetail />} /> */}
+        </Route>
+
       </Routes>
     </Router>
   );

@@ -3,6 +3,8 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import "./HouseDetail.css";
 import { IoMdStar } from "react-icons/io";
+import { useNavigate } from "react-router-dom";
+
 
 const baseUrl = import.meta.env.VITE_API_URL;
 const endPoint = "apartment";
@@ -16,6 +18,7 @@ const HeroSection = ({
   handleNextImage,
   handlePrevImage,
   scrollToForm,
+  initializePayment
 }) => (
   <section className="hero-section">
     <div className="hero-image-container">
@@ -46,7 +49,7 @@ const HeroSection = ({
       <div className="hero-buttons" id="hero-buttons">
         <button>Schedule a Visit</button>
         <button onClick={scrollToForm}>Contact Agent</button>
-        <button>Make Payments </button>
+        <button onClick={ () => initializePayment(price)} >Make Payments </button>
       </div>
     </aside>
   </section>
@@ -143,13 +146,14 @@ const HouseDetail = () => {
     const [userAgent, setUserAgent] = useState(null);
     const [loading, setLoading] = useState(false);
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
+    const navigate = useNavigate();
 
     const fetchApartmentDetails = async () => {
         try {
             const { data } = await axios.get(`${baseUrl}${endPoint}/${apartmentId}/`);
             const updatedImageList = data.image_url_list ? [data.image, ...data.image_url_list] : [data.image];
             setApartment({ ...data, image_url_list: updatedImageList });
-            setUserId(data.id)
+            setUserId(data.uploader_id)
         } catch (error) {
                 console.error("Error fetching apartment:", error);
         } finally {
@@ -217,9 +221,12 @@ const HouseDetail = () => {
       }, 300);
     }
 
-    const makePayment = () => {
-      
-    
+    const initializePayment = (price) => {
+      navigate("/payment", {
+        replace: true,
+        state: {
+          amount: price
+        } });
     };
 
 
@@ -246,6 +253,7 @@ const HouseDetail = () => {
           handleNextImage={handleNextImage}
           handlePrevImage={handlePrevImage}
           scrollToForm={scrollToForm}
+          initializePayment={initializePayment}
           />
         <KeyDetails
             details={{ apartment_type, location, price, is_leased, uploaded_by }}

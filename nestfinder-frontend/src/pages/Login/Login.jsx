@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import './Login.css';
 import auth from '../../assets/auth.jpg'
-import {Link, redirect} from 'react-router-dom'
+import {Link} from 'react-router-dom'
 import useClearError from '../../components/clearMessage'
 import  { useNavigate } from 'react-router-dom'
 
