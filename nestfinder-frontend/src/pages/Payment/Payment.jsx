@@ -1,36 +1,38 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import './Payment.css';
-import { useNavigate, useNavigation } from 'react-router-dom';
-import axios from 'axios';
+import { useNavigate, useLocation } from 'react-router-dom';
+// import axios from 'axios';
 
 const baseUrl = import.meta.env.VITE_API_URL;
 const endPoint = "payment";
 
-const Payment = (amount) => {
-    const [email, setEmail] = useState('');
+const Payment = () => {
     const [authorizationUrl, setAuthorizationUrl] = useState('');
+    const [amount, setAmount] = useState(0);
+    const [email, setEmail] = useState(null);
     const navigate = useNavigate();
 
-    const getAuthorizationUrl = async () => {
-        try {
-            const response = await fetch(`${baseUrl}${endPoint}/`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Referer': 'http://localhost:5173'
-                },
-                body: JSON.stringify({ email: 'email', amount: 'amount' }),
-                credentials: 'include'
-            })
-            setAuthorizationUrl(response.data);
-            console.log(response.data);
-            return response.data;
-        } catch (error) {
-            console.error(`Error fetching authorization URL: ${error}`);
-        }
-    };
+    // useEffect(() => {
+    // const getAuthorizationUrl = async () => {
+    //   try {
+    //     const response = await fetch(`${baseUrl}${endPoint}/`, {
+    //       method: "POST",
+    //       headers: {
+    //         "Content-Type": "application/json",
+    //         Referer: "http://localhost:5173",
+    //       },
+    //       body: JSON.stringify({ email, amount: myVariable?.price || 0 }),
+    //       credentials: "include",
+    //     });
+    //     const data = await response.json();
+    //     setAuthorizationUrl(data.authorization_url);
+    //   } catch (error) {
+    //     console.error(`Error fetching authorization URL: ${error}`);
+    //   }
+    // };
 
-    const response =  getAuthorizationUrl();
+//     getAuthorizationUrl();
+//   }, [myVariable?.price])
 
     return (
         <div className="payment-confirmation">
@@ -43,7 +45,8 @@ const Payment = (amount) => {
             <div className="payment-actions">
                 <button 
                   className="confirm-payment"
-                  onClick={() => `window.location.href=${response.data.authorization_url}`}>
+                //   onClick={() => `window.location.href=${response.data.authorization_url}`}
+                >
                     Confirm Payment
                 </button>
                 <button 

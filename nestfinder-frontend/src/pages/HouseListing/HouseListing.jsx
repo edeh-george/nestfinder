@@ -26,7 +26,7 @@ const HouseListing = () => {
     dateTo: searchParams.get("date_to") || "",
     ordering: searchParams.get("ordering") || "",
     offset: searchParams.get("offset") || 0,
-    limit: searchParams.get("limit") || 0
+    limit: searchParams.get("limit")
   };
 
   let query = new URLSearchParams({

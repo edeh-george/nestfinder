@@ -177,6 +177,7 @@ body {
 
 .review-profile p{
   margin-left: .5vw;
+  gap: 10px
 }
 
 .review-rating-created{

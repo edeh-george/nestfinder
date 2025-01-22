@@ -1,1 +1,0 @@
-# nestfinder-frontend

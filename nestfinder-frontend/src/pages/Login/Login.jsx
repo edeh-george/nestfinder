@@ -1,9 +1,10 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import './Login.css';
 import auth from '../../assets/auth.jpg'
 import {Link} from 'react-router-dom'
 import useClearError from '../../components/clearMessage'
 import  { useNavigate } from 'react-router-dom'
+import { UserContext } from '../../contexts/UserContext';
 
 const baseUrl = import.meta.env.VITE_API_URL;
 const endPoint = 'token/';
@@ -15,6 +16,7 @@ const Login = () => {
     const [errorMessage, setErrorMessage] = useState('');
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
+    const { setUserName } = useContext(UserContext)
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -36,6 +38,7 @@ const Login = () => {
 
             if (response.ok) {
                 const data = await response.json();
+                setUserName(data.user)
                 navigate("/houses/", { replace: true });
             } else {
                 const errorData = await response.json();

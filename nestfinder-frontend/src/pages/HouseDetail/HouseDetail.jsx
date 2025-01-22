@@ -101,7 +101,7 @@ const Reviews = ({ reviews }) =>
       </section>
     );
 
-  const ContactSection = ({ userAgent }) => (
+  const ContactSection = ({ userAgent, userName, email }) => (
     <section className="contact">
       <h2>Contact Agent</h2>
       {userAgent ? (
@@ -113,9 +113,22 @@ const Reviews = ({ reviews }) =>
         <p>Contact details not available.</p>
       )}
       <form className="contact-form" id="contact-form">
-        <input id="contact-name" type="text" placeholder="Your Name" value="" required />
-        <input type="email" placeholder="Your Email" value="" required />
+        <input 
+          id="contact-name" 
+          type="text" 
+          placeholder="Your Name" 
+          value={userName} 
+          onChange = {(e) => setName(e.target.value)}
+          required />
+
+        <input 
+          type="email" 
+          placeholder="Your Email" 
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required />
         <textarea placeholder="Your Message" required></textarea>
+        {/* You are yet to add the mail submission logic for backend */ }
         <button type="submit">Send Message</button>
       </form>
     </section>
@@ -148,6 +161,9 @@ const HouseDetail = () => {
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
     const navigate = useNavigate();
 
+    const [userName, setUserName] = useState("");
+    const [email, setEmail] = useState("");
+
     const fetchApartmentDetails = async () => {
         try {
             const { data } = await axios.get(`${baseUrl}${endPoint}/${apartmentId}/`);
@@ -163,7 +179,9 @@ const HouseDetail = () => {
 
     const fetchReviews = async () => {
       try {
-        const { data } = await axios.get(`${baseUrl}reviews/${apartmentId}/`);
+        const { data } = await axios.get(`${baseUrl}reviews/${apartmentId}/`, {
+          withCredentials: true
+        });
         setReviews(data.results || []);
       } catch (error) {
         console.error("Error fetching reviews:", error);
@@ -172,7 +190,9 @@ const HouseDetail = () => {
 
     const fetchUser = async () => {
       try {
-        const { data } = await axios.get(`${baseUrl}user/${userId}`);
+        const { data } = await axios.get(`${baseUrl}user/${userId}`, {
+          withCredentials: true
+        });
         setUserAgent(data);
       } catch (error) {
         console.error("Error fetching reviews:", error);
@@ -222,11 +242,10 @@ const HouseDetail = () => {
     }
 
     const initializePayment = (price) => {
-      navigate("/payment", {
+      
+      navigate(`payment/`, {
         replace: true,
-        state: {
-          amount: price
-        } });
+        });
     };
 
 
@@ -260,7 +279,12 @@ const HouseDetail = () => {
         />
         <Description description={description} />
         <Reviews reviews={reviews} />
-        <ContactSection userAgent={userAgent} />
+        <ContactSection 
+          userAgent={userAgent}
+          userName={userName}
+          email = {email} 
+          setEmail = {setEmail}
+          setUserName = {setUserName}/>
         <RelatedListings relatedHouses={relatedHouses} />
       </div>
     );

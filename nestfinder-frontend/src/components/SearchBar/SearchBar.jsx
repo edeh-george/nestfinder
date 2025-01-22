@@ -1,5 +1,4 @@
 import React from "react";
-import { FaSearch } from "react-icons/fa";
 import { useSearchParams } from "react-router-dom";
 import "./SearchBar.css";
 
