@@ -7,27 +7,28 @@ import HouseListing from "./pages/HouseListing/HouseListing";
 import HouseDetail from "./pages/HouseDetail/HouseDetail";
 import Payment from "./pages/Payment/Payment";
 import { UserProvider } from "./contexts/UserContext";
+import { PaymentProvider } from "./contexts/PaymentContext";
 
 function App() {
   return (
     <UserProvider>
-       <Router>
-        <Routes>
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/forgot-password" element={<ForgotPassword />} />
-          <Route path="/houses" element={<Layout />}>
-            <Route index element={<HouseListing />} />
-            <Route path=":apartmentId" element={<HouseDetail />} />
-          </Route>
-
-          <Route path="/payment" element={<Layout />}>
-            <Route index element={<Payment />} />
-            {/* <Route path="verify/" element={<HouseDetail />} /> */}
-          </Route>
-
-        </Routes>
-      </Router>
+      <PaymentProvider>
+        <Router>
+          <Routes>
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<Signup />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route path="/houses" element={<Layout />}>
+              <Route index element={<HouseListing />} />
+              <Route path=":apartmentId" element={<HouseDetail />} />
+            </Route>
+            <Route path="/payment" element={<Layout />}>
+              <Route index element={<Payment />} />
+              {/* <Route path="verify/" element={<HouseDetail />} /> */}
+            </Route>
+          </Routes>
+        </Router>
+      </PaymentProvider>
     </UserProvider>
    
   );

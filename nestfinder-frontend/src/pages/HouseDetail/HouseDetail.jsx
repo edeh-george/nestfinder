@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useParams } from "react-router-dom";
-import axios from "axios";
-import "./HouseDetail.css";
 import { IoMdStar } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
+import PaymentContext from "../../contexts/PaymentContext";
+import axios from "axios";
+import "./HouseDetail.css";
 
 
 const baseUrl = import.meta.env.VITE_API_URL;
@@ -160,7 +161,7 @@ const HouseDetail = () => {
     const [loading, setLoading] = useState(false);
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
     const navigate = useNavigate();
-
+    const { setPrice } = useContext(PaymentContext);
     const [userName, setUserName] = useState("");
     const [email, setEmail] = useState("");
 
@@ -170,6 +171,7 @@ const HouseDetail = () => {
             const updatedImageList = data.image_url_list ? [data.image, ...data.image_url_list] : [data.image];
             setApartment({ ...data, image_url_list: updatedImageList });
             setUserId(data.uploader_id)
+            setPrice(data.price);
         } catch (error) {
                 console.error("Error fetching apartment:", error);
         } finally {
@@ -188,7 +190,7 @@ const HouseDetail = () => {
       }
     };
 
-    const fetchUser = async () => {
+    const fetchLandlord = async () => {
       try {
         const { data } = await axios.get(`${baseUrl}user/${userId}`, {
           withCredentials: true
@@ -207,7 +209,7 @@ const HouseDetail = () => {
 
     useEffect(() => {
         if (userId) {
-            fetchUser();
+            fetchLandlord();
         }
     }, [userId]);
 
@@ -242,10 +244,7 @@ const HouseDetail = () => {
     }
 
     const initializePayment = (price) => {
-      
-      navigate(`payment/`, {
-        replace: true,
-        });
+      navigate(`/payment/`);
     };
 
 
