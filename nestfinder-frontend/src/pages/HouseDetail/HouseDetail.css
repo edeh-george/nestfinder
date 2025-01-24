@@ -26,9 +26,13 @@ body {
   transition: filter 0.3s ease;
 }
 
+.hero-image-container{
+  position: relative;
+}
+
 .hero-image{
-  max-width: 60vw;
-  height: auto;
+  max-width: 40vw;
+  max-height: 60vh;
   object-fit: cover;
   border-radius: 1em;
   z-index: 1000;
@@ -41,11 +45,11 @@ body {
 .next-arrow {
   position: absolute;
   top: 50%;
-  transform: translateY(-50%);
+  /* transform: translateY(-50%); */
   font-size: 2em;
   background-color: transparent;
   border: none;
-  color: whitesmoke;
+  color: rgb(110, 110, 233); /* whitesmoke;*/
   cursor: pointer;
   z-index: 1001;
   padding: 0 1vw;
@@ -57,7 +61,7 @@ body {
 }
 
 .next-arrow {
-  right: 32%;
+  right: .1%;
 }
 
 .prev-arrow:hover,
@@ -173,6 +177,7 @@ body {
 
 .review-profile p{
   margin-left: .5vw;
+  gap: 10px
 }
 
 .review-rating-created{

@@ -1,8 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useParams } from "react-router-dom";
+import { IoMdStar } from "react-icons/io";
+import { useNavigate } from "react-router-dom";
+import PaymentContext from "../../contexts/PaymentContext";
 import axios from "axios";
 import "./HouseDetail.css";
-import { IoMdStar } from "react-icons/io";
+
 
 const baseUrl = import.meta.env.VITE_API_URL;
 const endPoint = "apartment";
@@ -15,9 +18,11 @@ const HeroSection = ({
   currentImageIndex,
   handleNextImage,
   handlePrevImage,
+  scrollToForm,
+  initializePayment
 }) => (
   <section className="hero-section">
-    <div className="hero-image-section">
+    <div className="hero-image-container">
       <img
           src={image_url_list[currentImageIndex]}
           alt={`House ${currentImageIndex + 1}`}
@@ -42,10 +47,10 @@ const HeroSection = ({
         <p className="apartment-location">{location}</p>
         <p className="apartment-price">₦{price.toLocaleString()}</p>
       </div>
-      <div className="hero-buttons">
+      <div className="hero-buttons" id="hero-buttons">
         <button>Schedule a Visit</button>
-        <button>Contact Agent</button>
-        <button>Save to Favorites</button>
+        <button onClick={scrollToForm}>Contact Agent</button>
+        <button onClick={ () => initializePayment(price)} >Make Payments </button>
       </div>
     </aside>
   </section>
@@ -97,7 +102,7 @@ const Reviews = ({ reviews }) =>
       </section>
     );
 
-  const ContactSection = ({ userAgent }) => (
+  const ContactSection = ({ userAgent, userName, email }) => (
     <section className="contact">
       <h2>Contact Agent</h2>
       {userAgent ? (
@@ -108,10 +113,23 @@ const Reviews = ({ reviews }) =>
       ) : (
         <p>Contact details not available.</p>
       )}
-      <form className="contact-form">
-        <input type="text" placeholder="Your Name" value="" required />
-        <input type="email" placeholder="Your Email" value="" required />
+      <form className="contact-form" id="contact-form">
+        <input 
+          id="contact-name" 
+          type="text" 
+          placeholder="Your Name" 
+          value={userName} 
+          onChange = {(e) => setName(e.target.value)}
+          required />
+
+        <input 
+          type="email" 
+          placeholder="Your Email" 
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required />
         <textarea placeholder="Your Message" required></textarea>
+        {/* You are yet to add the mail submission logic for backend */ }
         <button type="submit">Send Message</button>
       </form>
     </section>
@@ -142,13 +160,18 @@ const HouseDetail = () => {
     const [userAgent, setUserAgent] = useState(null);
     const [loading, setLoading] = useState(false);
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
+    const navigate = useNavigate();
+    const { setPrice } = useContext(PaymentContext);
+    const [userName, setUserName] = useState("");
+    const [email, setEmail] = useState("");
 
     const fetchApartmentDetails = async () => {
         try {
             const { data } = await axios.get(`${baseUrl}${endPoint}/${apartmentId}/`);
             const updatedImageList = data.image_url_list ? [data.image, ...data.image_url_list] : [data.image];
             setApartment({ ...data, image_url_list: updatedImageList });
-            setUserId(data.id)
+            setUserId(data.uploader_id)
+            setPrice(data.price);
         } catch (error) {
                 console.error("Error fetching apartment:", error);
         } finally {
@@ -158,16 +181,20 @@ const HouseDetail = () => {
 
     const fetchReviews = async () => {
       try {
-        const { data } = await axios.get(`${baseUrl}reviews/${apartmentId}/`);
+        const { data } = await axios.get(`${baseUrl}reviews/${apartmentId}/`, {
+          withCredentials: true
+        });
         setReviews(data.results || []);
       } catch (error) {
         console.error("Error fetching reviews:", error);
       }
     };
 
-    const fetchUser = async () => {
+    const fetchLandlord = async () => {
       try {
-        const { data } = await axios.get(`${baseUrl}user/${userId}`);
+        const { data } = await axios.get(`${baseUrl}user/${userId}`, {
+          withCredentials: true
+        });
         setUserAgent(data);
       } catch (error) {
         console.error("Error fetching reviews:", error);
@@ -182,7 +209,7 @@ const HouseDetail = () => {
 
     useEffect(() => {
         if (userId) {
-            fetchUser();
+            fetchLandlord();
         }
     }, [userId]);
 
@@ -204,6 +231,20 @@ const HouseDetail = () => {
       setCurrentImageIndex((prevIndex) => {
         return prevIndex - 1 >= 0 ? prevIndex - 1 : prevIndex;
       });
+    };
+
+    const scrollToForm = () => {
+      const formSection = document.getElementById("contact-form");
+      formSection.scrollIntoView({ behavior: "smooth" });
+
+      setTimeout(() => {
+        const firstInput = document.getElementById("contact-name");
+        if (firstInput) firstInput.focus();
+      }, 300);
+    }
+
+    const initializePayment = (price) => {
+      navigate(`/payment/`);
     };
 
 
@@ -229,13 +270,20 @@ const HouseDetail = () => {
           currentImageIndex={currentImageIndex}
           handleNextImage={handleNextImage}
           handlePrevImage={handlePrevImage}
-        />
+          scrollToForm={scrollToForm}
+          initializePayment={initializePayment}
+          />
         <KeyDetails
             details={{ apartment_type, location, price, is_leased, uploaded_by }}
         />
         <Description description={description} />
         <Reviews reviews={reviews} />
-        <ContactSection userAgent={userAgent} />
+        <ContactSection 
+          userAgent={userAgent}
+          userName={userName}
+          email = {email} 
+          setEmail = {setEmail}
+          setUserName = {setUserName}/>
         <RelatedListings relatedHouses={relatedHouses} />
       </div>
     );

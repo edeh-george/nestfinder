@@ -1,7 +1,11 @@
 import "./Header.css"
 import SearchBar from "../SearchBar/SearchBar";
+import { useContext } from "react";
+import { UserContext } from "../../contexts/UserContext";
+
 
 const Header = () => {
+    const { userName } = useContext(UserContext);
 
     return (
         <header>
@@ -15,7 +19,13 @@ const Header = () => {
                 </ul>
                 </nav>
             </div>
-            
+            {userName && <p className="user-greetings">
+                Welcome, {userName}
+            </p>}
+            <ul>
+                <li><a href="#"> Logout</a></li>
+            </ul>
+
         </header>
     
     );

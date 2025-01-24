@@ -1,9 +1,9 @@
-import { useState } from 'react';
-import './Login.css';
+import { useState, useContext, useEffect } from 'react';
+import  { useNavigate, useSearchParams, Link } from 'react-router-dom'
 import auth from '../../assets/auth.jpg'
-import {Link, redirect} from 'react-router-dom'
 import useClearError from '../../components/clearMessage'
-import  { useNavigate } from 'react-router-dom'
+import { UserContext } from '../../contexts/UserContext';
+import './Login.css';
 
 const baseUrl = import.meta.env.VITE_API_URL;
 const endPoint = 'token/';
@@ -12,13 +12,37 @@ const fullUrl = new URL(endPoint, baseUrl).toString();
 const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [isChecked, setIsChecked] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
+    const { setUserName } = useContext(UserContext)
+    const [searchParams, setSearchParams] = useSearchParams();
+
+
+    useEffect(() => {
+        setIsChecked(searchParams.get('remember_me')? true: false);}, 
+        [searchParams]
+        );
+
+    const handleCheckboxChange = (e) => {
+            const isChecked = e.target.checked;
+            setIsChecked(isChecked);
+            setSearchParams((prev) => {
+                const updatedParams = new URLSearchParams(prev);
+                if (isChecked) {
+                    updatedParams.set('remember_me', isChecked);
+                } else {
+                    updatedParams.delete('remember_me');
+                }
+                return updatedParams;
+            })
+        };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
+
 
         try {
             const response = await fetch(fullUrl, {
@@ -29,13 +53,13 @@ const Login = () => {
                 body: JSON.stringify({
                     email: email,
                     password: password,
-                    //remember_me should be part of this body
                 }),
+                credentials: 'include',
             });
 
             if (response.ok) {
                 const data = await response.json();
-                console.log("Login successful:")
+                setUserName(data.user)
                 navigate("/houses/", { replace: true });
             } else {
                 const errorData = await response.json();
@@ -79,11 +103,13 @@ const Login = () => {
                         />
                     </div>
                     <div className="remember-forgot">
-                        <label htmlFor="checkbox" className="remember-me">
+                        <label id="remember-me" htmlFor="checkbox" className="remember-me">
                             <input 
                             type="checkbox"
                             name="remember_me"
                             id="checkbox" 
+                            checked={isChecked}
+                            onChange={handleCheckboxChange}
                             />
                             remember me
                         </label>
