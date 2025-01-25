@@ -8,6 +8,7 @@ import HouseDetail from "./pages/HouseDetail/HouseDetail";
 import Payment from "./pages/Payment/Payment";
 import { UserProvider } from "./contexts/UserContext";
 import { PaymentProvider } from "./contexts/PaymentContext";
+import { Analytics } from '@vercel/analytics/react';
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
               {/* <Route path="verify/" element={<HouseDetail />} /> */}
             </Route>
           </Routes>
+          <Analytics />
         </Router>
       </PaymentProvider>
     </UserProvider>
