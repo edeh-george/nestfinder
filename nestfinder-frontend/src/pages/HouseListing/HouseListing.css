@@ -5,38 +5,6 @@
   background-color: #f9f9f9;
 }
 
-.filters {
-  position: fixed;
-  width: 20vw;
-  height: 80vh;
-  padding: 20px;
-  background-color: #fff;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.filters h3 {
-  margin-bottom: 15px;
-  color: #333;
-  font-size: 1.25em;
-}
-
-.filters label {
-  display: block;
-  margin-top: 10px;
-  font-weight: bold;
-  color: #555;
-}
-
-.filters input,
-.filters select {
-  width: 100%;
-  padding: 8px;
-  margin-top: 5px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-}
-
 .house-results {
   flex: 1;
   padding: 20px;

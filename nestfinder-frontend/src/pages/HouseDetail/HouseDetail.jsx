@@ -167,7 +167,9 @@ const HouseDetail = () => {
 
     const fetchApartmentDetails = async () => {
         try {
-            const { data } = await axios.get(`${baseUrl}${endPoint}/${apartmentId}/`);
+            const { data } = await axios.get(`${baseUrl}${endPoint}/${apartmentId}/`,{
+                withCredentials: true
+            });
             const updatedImageList = data.image_url_list ? [data.image, ...data.image_url_list] : [data.image];
             setApartment({ ...data, image_url_list: updatedImageList });
             setUserId(data.uploader_id)

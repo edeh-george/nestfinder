@@ -1,0 +1,111 @@
+/* Global Styles */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap');
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Poppins', Arial, sans-serif;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Page Header */
+.page-info {
+  text-align: center;
+  margin: 5vh 0;
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: #333;
+}
+
+/* Profile Section */
+.profile-section {
+  display: flex;
+  justify-content: space-between;
+  flex: 1;
+  flex-direction: column;
+  gap: 20px;
+  padding: 20px;
+  max-width: 90vw;
+  margin: 0 auto;
+}
+
+/* Main Info Section */
+.user-main-info {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  border: 1px solid #ddd;
+  border-radius: 20px;
+  padding: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+}
+
+.profile-picture {
+  width: 120px;
+  height: 120px;
+  border: 2px solid #ddd;
+  border-radius: 50%;
+  margin: 5px;
+  transform: scale(1.1);
+}
+
+.user-main-info-text {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  text-align: left;
+}
+
+.user-main-info-text h1 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.user-main-info-text p {
+  color: #5f5b5b;
+  font-size: 0.9rem;
+}
+
+.other-section{
+  display: flex;
+  max-width: 40vw;
+  max-height: 30px;
+  background: #f9f9f9;
+  padding: 15px;
+  border-radius: 10px;
+  gap: 20px;
+}
+
+.other-section h2 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 10px;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 5px;
+}
+
+/* Bio Section */
+.user-info {
+  text-align: left;
+  flex: 1;
+}
+
+.user-info p {
+  margin: 5px 0;
+  color: #333;
+  font-size: 0.9rem;
+}
+
+.user-preferences{
+  transform: translate(40vw);
+  max-width: 40vw;
+  text-align: left;
+  right: 10vw;
+}
