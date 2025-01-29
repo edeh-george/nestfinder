@@ -44,7 +44,7 @@ ul a{
 nav ul {
   display: flex;
   gap: 10px;
-  transform: translate(-75vw)
+  transform: translate(-65vw)
 }
 
 nav ul li a {
