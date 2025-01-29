@@ -14,6 +14,11 @@ const Payment = () => {
     const { price } = useContext(PaymentContext);
     const navigate = useNavigate();
 
+    function getCookie(name) {
+      var match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+      return match ? match[2] : null;
+    }
+
     // Fetch user data
     useEffect(() => {
         const fetchUser = async () => {
