@@ -1,0 +1,81 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.payment-verification {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f8f9fa;
+}
+
+.payment-verification h2 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    color: #333;
+}
+
+.payment-verification p {
+    font-size: 1.2rem;
+    margin: 0.5rem 0;
+    text-align: center;
+    color: #555;
+}
+
+.transaction-status {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin: 1rem 0;
+}
+
+/* Success Status */
+.transaction-status.success {
+    color: #28a745;
+}
+
+/* Failure Status */
+.transaction-status.failure {
+    color: #dc3545;
+}
+
+/* Loading Spinner */
+.loading {
+    font-size: 1.2rem;
+    color: #007bff;
+    font-weight: bold;
+    animation: blink 1.5s infinite alternate;
+}
+
+@keyframes blink {
+    0% { opacity: 1; }
+    100% { opacity: 0.5; }
+}
+
+.payment-actions {
+    margin-top: 1.5rem;
+    display: flex;
+    gap: 1rem;
+}
+
+.payment-actions button {
+    padding: 0.8rem 1.5rem;
+    font-size: 1rem;
+    font-weight: bold;
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.payment-actions .go-dashboard {
+    background-color: #007bff;
+    color: #fff;
+}
+
+.payment-actions .go-dashboard:hover {
+    background-color: #0056b3;
+}
