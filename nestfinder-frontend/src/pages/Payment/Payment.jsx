@@ -14,44 +14,45 @@ const Payment = () => {
     const { price } = useContext(PaymentContext);
     const navigate = useNavigate();
 
-    const getCookie = (name) => {
-        const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
-        return match ? match[2] : null;
-    };
-
+    // Fetch user data
     useEffect(() => {
         const fetchUser = async () => {
             try {
-                const { data } = await axios.get(`${baseUrl}user/`, { withCredentials: true });
+                const { data } = await axios.get(`${baseUrl}user/`, {
+                    withCredentials: true,
+                });
                 setEmail(data.email);
                 setName(data.username);
-                console.log(data.email);
             } catch (error) {
-                console.error("Error fetching user details:", error);
+                console.error("Error fetching user:", error);
             }
         };
 
         fetchUser();
     }, []);
 
+    // Fetch payment authorization URL
     useEffect(() => {
-        if (!email) return;
-
         const getAuthorizationUrl = async () => {
+            if (!email) return;
+
             try {
-                const csrfToken = getCookie("csrftoken");
+                const csrfToken = document.cookie.match(/csrftoken=([^;]+)/)?.[1];
                 const { data } = await axios.post(
                     `${baseUrl}${endPoint}/`,
-                    { email, amount: price || 0 },
+                    {
+                        email,
+                        amount: price || 0,
+                    },
                     {
                         headers: {
                             "Content-Type": "application/json",
-                            "X-CSRFToken": csrfToken
+                            "X-CSRFToken": csrfToken,
                         },
                         withCredentials: true,
                     }
                 );
-                setAuthorizationUrl(data.data.data.authorization_url);
+                setAuthorizationUrl(data.data.authorization_url);
             } catch (error) {
                 console.error(`Error fetching authorization URL: ${error}`);
             }
@@ -59,14 +60,6 @@ const Payment = () => {
 
         getAuthorizationUrl();
     }, [email, price]);
-
-    const makePayment = () => {
-        if (authorizationUrl) {
-            window.location.href = authorizationUrl;
-        } else {
-            console.error("Authorization URL is not available.");
-        }
-    };
 
     return (
         <div className="payment-confirmation">
@@ -76,18 +69,26 @@ const Payment = () => {
                 <span>₦{price.toLocaleString()}</span>
             </div>
             <p>Please confirm your payment to proceed.</p>
+            <h2>Payment Confirmation</h2>
+            <p>{name}, You are about to make a payment of:</p>
+            <div className="payment-amount">
+                <span>₦{price.toLocaleString()}</span>
+            </div>
+            <p>Please confirm your payment to proceed.</p>
             <div className="payment-actions">
-                <button 
-                    className={`confirm-payment-${!authorizationUrl? 'disabled': ''}`}
-                    onClick={makePayment}
-                    // disabled={!authorizationUrl}
+                <button
+                    className="confirm-payment"
+                    onClick={() => {
+                        if (authorizationUrl) {
+                            window.location.href = authorizationUrl;
+                        } else {
+                            console.error("Authorization URL not available");
+                        }
+                    }}
                 >
                     Confirm Payment
                 </button>
-                <button 
-                    className="cancel-payment"
-                    onClick={() => navigate(-1)}
-                >
+                <button className="cancel-payment" onClick={() => navigate(-1)}>
                     Cancel
                 </button>
             </div>

@@ -6,7 +6,11 @@ import ForgotPassword from "./pages/ForgotPassword/ForgotPassword";
 import HouseListing from "./pages/HouseListing/HouseListing";
 import HouseDetail from "./pages/HouseDetail/HouseDetail";
 import Payment from "./pages/Payment/Payment";
+<<<<<<< HEAD
 import Profile from "./pages/Profile/Profile";
+=======
+import PaymentVerify from "./pages/PaymentVerify/PaymentVerify";
+>>>>>>> 1ce1dd6 (Fixed error with making requests to payment init endpoint)
 import { UserProvider } from "./contexts/UserContext";
 import { PaymentProvider } from "./contexts/PaymentContext";
 import { FilterProvider } from "./contexts/FilterContext";
@@ -16,6 +20,7 @@ function App() {
   return (
     <UserProvider>
       <PaymentProvider>
+<<<<<<< HEAD
         <FilterProvider>
           <Router>
             <Routes>
@@ -36,6 +41,24 @@ function App() {
             <Analytics />
           </Router>
         </FilterProvider>
+=======
+        <Router>
+          <Routes>
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<Signup />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route path="/houses" element={<Layout />}>
+              <Route index element={<HouseListing />} />
+              <Route path=":apartmentId" element={<HouseDetail />} />
+            </Route>
+            <Route path="/payment" element={<Layout />}>
+              <Route index element={<Payment />} />
+              <Route path="verify/" element={<PaymentVerify />} />
+            </Route>
+          </Routes>
+          <Analytics />
+        </Router>
+>>>>>>> 1ce1dd6 (Fixed error with making requests to payment init endpoint)
       </PaymentProvider>
     </UserProvider>
    
