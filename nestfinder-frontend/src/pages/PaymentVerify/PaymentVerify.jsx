@@ -27,7 +27,7 @@ const PaymentVerify = () => {
           withCredentials: true,
         });
         
-        if (response.data.status === "success") {
+        if (response.data.status === true) {
           setStatus("Payment successful! Redirecting...");
           setTimeout(() => navigate("/dashboard"), 3000);
         } else {

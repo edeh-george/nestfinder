@@ -10,6 +10,7 @@ import PaymentVerify from "./pages/PaymentVerify/PaymentVerify";
 import { UserProvider } from "./contexts/UserContext";
 import { PaymentProvider } from "./contexts/PaymentContext";
 import { Analytics } from '@vercel/analytics/react';
+import LandingPage from "./pages/LandingPage/LandingPage";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
       <PaymentProvider>
         <Router>
           <Routes>
+            <Route path="/" element={<LandingPage />} />  
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
