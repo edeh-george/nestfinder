@@ -7,12 +7,18 @@ import './Payment.css';
 const baseUrl = import.meta.env.VITE_API_URL;
 const endPoint = "payment";
 
+
 const Payment = () => {
     const [authorizationUrl, setAuthorizationUrl] = useState('');
     const [name, setName] = useState('');
     const [email, setEmail] = useState("");
     const { price } = useContext(PaymentContext)
     const navigate = useNavigate();
+
+    function getCookie(name) {
+      var match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+      return match ? match[2] : null;
+    }
 
     const fetchUser = async () => {
       try {
@@ -29,15 +35,17 @@ const Payment = () => {
     useEffect(() => {
     const getAuthorizationUrl = async () => {
       try {
-        
+        const csrfToken = getCookie("csrftoken");  
+        console.log(csrfToken)      
         const response = await axios.post(`${baseUrl}${endPoint}/`,{ 
             email, 
             amount: price || 0 
           },{
             headers: {
               "Content-Type": "application/json",
+              "x-csrf-token": csrfToken
             },
-            withCredentials: true,
+            wiThCredentials: true,
       });
         const data = await response.json();
         setAuthorizationUrl(data.authorization_url);
