@@ -55,6 +55,11 @@
   color: #fff;
 }
 
+.payment-actions .confirm-payment-disabled {
+  background-color: #434744;
+  color: #fff;
+}
+
 .payment-actions .confirm-payment:hover {
   background-color: #218838; /* Darker green */
 }
