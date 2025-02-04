@@ -102,7 +102,7 @@ const Reviews = ({ reviews }) =>
       </section>
     );
 
-  const ContactSection = ({ userAgent, userName, email }) => (
+  const ContactSection = ({ userAgent, userName, email, message, handleSubmit }) => (
     <section className="contact">
       <h2>Contact Agent</h2>
       {userAgent ? (
@@ -113,7 +113,7 @@ const Reviews = ({ reviews }) =>
       ) : (
         <p>Contact details not available.</p>
       )}
-      <form className="contact-form" id="contact-form">
+      <form className="contact-form" id="contact-form" onSubmit={handleSubmit}>
         <input 
           id="contact-name" 
           type="text" 
@@ -128,8 +128,12 @@ const Reviews = ({ reviews }) =>
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required />
-        <textarea placeholder="Your Message" required></textarea>
-        {/* You are yet to add the mail submission logic for backend */ }
+        <textarea
+          placeholder="Your Message"
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
+          required
+      ></textarea>
         <button type="submit">Send Message</button>
       </form>
     </section>
@@ -154,7 +158,7 @@ const Reviews = ({ reviews }) =>
 
 const HouseDetail = () => {
     const { apartmentId } = useParams();
-    const [userId, setUserId] = useState(null)
+    const [agentId, setagentId] = useState(null)
     const [apartment, setApartment] = useState(null);
     const [reviews, setReviews] = useState([]);
     const [userAgent, setUserAgent] = useState(null);
@@ -164,13 +168,14 @@ const HouseDetail = () => {
     const { setPrice } = useContext(PaymentContext);
     const [userName, setUserName] = useState("");
     const [email, setEmail] = useState("");
+    const [message, setMessage] = useState("");
 
     const fetchApartmentDetails = async () => {
         try {
             const { data } = await axios.get(`${baseUrl}${endPoint}/${apartmentId}/`);
             const updatedImageList = data.image_url_list ? [data.image, ...data.image_url_list] : [data.image];
             setApartment({ ...data, image_url_list: updatedImageList });
-            setUserId(data.uploader_id)
+            setagentId(data.uploader_id)
             setPrice(data.price);
         } catch (error) {
                 console.error("Error fetching apartment:", error);
@@ -192,7 +197,7 @@ const HouseDetail = () => {
 
     const fetchLandlord = async () => {
       try {
-        const { data } = await axios.get(`${baseUrl}user/${userId}`, {
+        const { data } = await axios.get(`${baseUrl}user/${agentId}`, {
           withCredentials: true
         });
         setUserAgent(data);
@@ -208,10 +213,10 @@ const HouseDetail = () => {
     }, [apartmentId]);
 
     useEffect(() => {
-        if (userId) {
+        if (agentId) {
             fetchLandlord();
         }
-    }, [userId]);
+    }, [agentId]);
 
     if (loading) {
       return <div>Loading...</div>;
@@ -245,6 +250,23 @@ const HouseDetail = () => {
 
     const initializePayment = (price) => {
       navigate(`/payment/`);
+    };
+
+    const handleSubmit = async (e) => {
+      e.preventDefault();
+      try {
+        const response = await axios.post(`${baseUrl}mail/send-mail/`, {
+          name: userName,
+          email: email,
+          message: message,
+          agentMail: userAgent.email,
+        });
+        if (response.status === 200) {
+          alert("Message sent successfully");
+        }
+      } catch (error) {
+        console.error("Error sending message:", error);
+      }
     };
 
 
@@ -281,9 +303,12 @@ const HouseDetail = () => {
         <ContactSection 
           userAgent={userAgent}
           userName={userName}
-          email = {email} 
-          setEmail = {setEmail}
-          setUserName = {setUserName}/>
+          email={email}
+          message={message}
+          setUserName={setUserName}
+          setEmail={setEmail}
+          setMessage={setMessage}
+          handleSubmit={handleSubmit}/>
         <RelatedListings relatedHouses={relatedHouses} />
       </div>
     );
