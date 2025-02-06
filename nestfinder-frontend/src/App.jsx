@@ -16,6 +16,7 @@ import { PaymentProvider } from "./contexts/PaymentContext";
 import { FilterProvider } from "./contexts/FilterContext";
 import { Analytics } from '@vercel/analytics/react';
 import LandingPage from "./pages/LandingPage/LandingPage";
+import LandingPage from "./pages/LandingPage/LandingPage";
 
 function App() {
   return (
@@ -55,6 +56,7 @@ function App() {
             </Route>
             <Route path="/payment" element={<Layout />}>
               <Route index element={<Payment />} />
+              <Route path="verify/" element={<PaymentVerify />} />
               <Route path="verify/" element={<PaymentVerify />} />
             </Route>
           </Routes>
