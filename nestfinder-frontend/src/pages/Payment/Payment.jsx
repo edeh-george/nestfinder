@@ -74,12 +74,6 @@ const Payment = () => {
                 <span>₦{price.toLocaleString()}</span>
             </div>
             <p>Please confirm your payment to proceed.</p>
-            <h2>Payment Confirmation</h2>
-            <p>{name}, You are about to make a payment of:</p>
-            <div className="payment-amount">
-                <span>₦{price.toLocaleString()}</span>
-            </div>
-            <p>Please confirm your payment to proceed.</p>
             <div className="payment-actions">
                 <button
                     className="confirm-payment"
