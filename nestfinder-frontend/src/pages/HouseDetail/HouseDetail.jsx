@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { IoMdStar } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
 import PaymentContext from "../../contexts/PaymentContext";
+import { UserContext } from "../../contexts/UserContext";
 import axios from "axios";
 import "./HouseDetail.css";
 
@@ -102,13 +103,13 @@ const Reviews = ({ reviews }) =>
       </section>
     );
 
-  const ContactSection = ({ userAgent, userName, email, message, handleSubmit }) => (
+  const ContactSection = ({ agent, userName, email, message, setMessage, setEmail, setUserName, handleSubmit, status, setStatus }) => (
     <section className="contact">
       <h2>Contact Agent</h2>
-      {userAgent ? (
+      {agent ? (
         <div className="agent-details">
-          <p>Phone number: {userAgent.phone_number || "N/A"}</p>
-          <p>Email: {userAgent.email || "N/A"}</p>
+          <p>Agent: {agent.username || "N/A"}</p>
+          <p>Agent E-mail: {agent.email || "N/A"}</p>
         </div>
       ) : (
         <p>Contact details not available.</p>
@@ -118,13 +119,13 @@ const Reviews = ({ reviews }) =>
           id="contact-name" 
           type="text" 
           placeholder="Your Name" 
-          value={userName} 
-          onChange = {(e) => setName(e.target.value)}
+          value={userName}
+          onChange = {(e) => setUserName(e.target.value)}
           required />
 
         <input 
           type="email" 
-          placeholder="Your Email" 
+          placeholder="Enter your registered E-mail address" 
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required />
@@ -134,7 +135,7 @@ const Reviews = ({ reviews }) =>
           onChange={(e) => setMessage(e.target.value)}
           required
       ></textarea>
-        <button type="submit">Send Message</button>
+        <button type="submit">{status? "Sending message..." : "Send Message"}</button>
       </form>
     </section>
   );
@@ -158,25 +159,28 @@ const Reviews = ({ reviews }) =>
 
 const HouseDetail = () => {
     const { apartmentId } = useParams();
-    const [agentId, setagentId] = useState(null)
+    const [agentId, setAgentId] = useState(null)
     const [apartment, setApartment] = useState(null);
     const [reviews, setReviews] = useState([]);
-    const [userAgent, setUserAgent] = useState(null);
+    const [agent, setAgent] = useState(null);
     const [loading, setLoading] = useState(false);
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
     const navigate = useNavigate();
     const { setPrice } = useContext(PaymentContext);
+
     const [userName, setUserName] = useState("");
     const [email, setEmail] = useState("");
     const [message, setMessage] = useState("");
+    const [status, setStatus] = useState(false);
 
     const fetchApartmentDetails = async () => {
         try {
             const { data } = await axios.get(`${baseUrl}${endPoint}/${apartmentId}/`);
             const updatedImageList = data.image_url_list ? [data.image, ...data.image_url_list] : [data.image];
             setApartment({ ...data, image_url_list: updatedImageList });
-            setagentId(data.uploader_id)
+            setAgentId(data.uploader_id)
             setPrice(data.price);
+            
         } catch (error) {
                 console.error("Error fetching apartment:", error);
         } finally {
@@ -200,7 +204,7 @@ const HouseDetail = () => {
         const { data } = await axios.get(`${baseUrl}user/${agentId}`, {
           withCredentials: true
         });
-        setUserAgent(data);
+        setAgent(data);
       } catch (error) {
         console.error("Error fetching reviews:", error);
       }
@@ -252,22 +256,36 @@ const HouseDetail = () => {
       navigate(`/payment/`);
     };
 
+
     const handleSubmit = async (e) => {
       e.preventDefault();
+      setStatus(true);
+      if (!agent || !agent.email) {
+        alert("Agent details are not available. Please try again later.");
+        return;
+      }
       try {
         const response = await axios.post(`${baseUrl}mail/send-mail/`, {
           name: userName,
           email: email,
           message: message,
-          agentMail: userAgent.email,
+          agentMail: agent.email,
         });
         if (response.status === 200) {
           alert("Message sent successfully");
+          setUserName("");
+          setEmail("");
+          setMessage("");
+          setStatus(false);
         }
       } catch (error) {
         console.error("Error sending message:", error);
+        alert("Failed to send message. Please try again later.");
+        setStatus(false);
+
       }
     };
+
 
 
     const {
@@ -301,14 +319,16 @@ const HouseDetail = () => {
         <Description description={description} />
         <Reviews reviews={reviews} />
         <ContactSection 
-          userAgent={userAgent}
+          agent={agent}
           userName={userName}
           email={email}
           message={message}
-          setUserName={setUserName}
           setEmail={setEmail}
+          setUserName = {setUserName}
           setMessage={setMessage}
-          handleSubmit={handleSubmit}/>
+          handleSubmit={handleSubmit}
+          status = {status}
+          setStatus = {setStatus}/>
         <RelatedListings relatedHouses={relatedHouses} />
       </div>
     );
